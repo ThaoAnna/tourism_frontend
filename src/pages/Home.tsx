@@ -19,7 +19,7 @@ export default function Home() {
     <div className="max-w-5xl mx-auto px-6 py-4">
       <Header />
 
-      <div className="space-y-4 mb-10">
+      <div className="space-y-4 mb-10 pt-30">
         <SearchBar onSearch={setSearchTerm} />
         <FilterDropdown filter={filter} onFilterChange={setFilter} />
       </div>

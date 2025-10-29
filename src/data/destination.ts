@@ -25,7 +25,7 @@ export const destinations: Destination[] = [
     id: 3,
     name: "Rome",
     country: "Italy",
-    image: "https://images.unsplash.com/photo-1526481280691-906c4ad7b0e1",
+    image: "https://images.unsplash.com/photo-1526481280691-906c4ad7b0e1", //not available
     rating: 4.7,
   },
   {
@@ -39,7 +39,7 @@ export const destinations: Destination[] = [
     id: 5,
     name: "Barcelona",
     country: "Spain",
-    image: "https://images.unsplash.com/photo-1526483360412-f4dbaf036963",
+    image: "https://images.unsplash.com/photo-1526483360412-f4dbaf036963", //not available
     rating: 4.9,
   },
   {

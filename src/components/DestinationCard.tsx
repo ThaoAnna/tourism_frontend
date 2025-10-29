@@ -1,4 +1,3 @@
-// import { Star } from "lucide-react";
 import type  { Destination } from "../data/destination";
 
 export default function DestinationCard({ name, country, image, rating }: Destination) {
@@ -9,7 +8,6 @@ export default function DestinationCard({ name, country, image, rating }: Destin
         <h3 className="text-lg font-semibold">{name}</h3>
         <p className="text-sm text-gray-500 mb-2">{country}</p>
         <div className="flex items-center gap-1 text-yellow-500">
-          {/* <Star size={16} fill="currentColor" /> */}
           <span className="text-gray-700">{rating}</span>
         </div>
       </div>
