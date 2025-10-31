@@ -4,6 +4,8 @@ import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import FilterDropdown from "../components/FilterDropdown";
 import DestinationCard from "../components/DestinationCard";
+import Footer from "../components/Footer";
+
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,6 +36,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+      
+      <Footer/>
+
     </div>
   );
 }
