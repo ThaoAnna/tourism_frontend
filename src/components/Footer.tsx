@@ -1,40 +1,19 @@
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-10 mt-16">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-gray-900 text-gray-300 py-12 mt-20">
+      <div className="max-w-7xl mx-auto px-6 text-center md:text-left">
         {/* Brand / About section */}
-        <div>
-          <h2 className="text-xl font-semibold text-white mb-3">Wanderlust</h2>
-          <p className="text-sm leading-relaxed">
-            Explore the world’s most beautiful destinations.  
-            Discover, dream, and book your next adventure with ease.
-          </p>
-        </div>
-
-        {/* Links */}
-        <div>
-          <h3 className="text-lg font-semibold text-white mb-3">Quick Links</h3>
-          <ul className="space-y-2 text-sm">
-            <li><a href="#destinations" className="hover:text-white transition">Destinations</a></li>
-            <li><a href="#about" className="hover:text-white transition">About</a></li>
-            <li><a href="#contact" className="hover:text-white transition">Contact</a></li>
-          </ul>
-        </div>
-
-        {/* Social */}
-        {/* <div>
-          <h3 className="text-lg font-semibold text-white mb-3">Follow Us</h3>
-          <div className="flex space-x-4">
-            <a href="#" className="hover:text-white transition"><i className="fab fa-facebook-f"></i></a>
-            <a href="#" className="hover:text-white transition"><i className="fab fa-instagram"></i></a>
-            <a href="#" className="hover:text-white transition"><i className="fab fa-twitter"></i></a>
-            <a href="#" className="hover:text-white transition"><i className="fab fa-linkedin-in"></i></a>
-          </div>
-        </div> */}
+        <h2 className="text-5xl font-serif italic tracking-wide bg-gradient-to-r from-pink-300 via-orange-200 to-yellow-300 bg-clip-text text-transparent mb-3 drop-shadow-lg">
+          Wanderlust
+        </h2>
+        <p className="text-base text-gray-200 leading-relaxed font-light max-w-xl">
+          Explore the world’s most beautiful destinations.  
+          Discover, dream, and book your next adventure with ease.
+        </p>
       </div>
 
-      {/* Bottom text */}
-      <div className="border-t border-gray-700 mt-10 pt-4 text-center text-sm text-gray-400">
+      {/* Bottom line */}
+      <div className="mt-10 text-center text-gray-500 text-sm border-t border-gray-800 pt-6">
         © {new Date().getFullYear()} Wanderlust. All rights reserved.
       </div>
     </footer>
