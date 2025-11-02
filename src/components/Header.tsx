@@ -2,13 +2,13 @@ import logo from "../assets/logo.png";
 
 export default function Header() {
   return (
-    <header className="fixed inset-x-0 top-5 z-10 border-b border-black/5 dark:border-white/10">
-      <div className="flex h-16 items-center justify-between gap-8 px-4 sm:pz-6">
-        <div className="flex flex-row text-3xl font-bold text-gray-900 h-16 items-center justify-between gap-8">
+    <header className="fixed inset-x-0 top-0 z-10 border-b border-black/5 dark:border-white/10">
+      <div className="flex h-25 items-center justify-between gap-8 px-4 sm:pz-6 bg-gradient-to-r from-yellow-200 via-orange-200 to-pink-200">
+        <div className="flex flex-row text-3xl font-bold text-gray-900 h-25 items-center justify-between gap-8">
           <img
             src={logo}
             alt="Wanderluster logo"
-            className="h-32 w-32 object-contain"
+            className="h-25 w-25 object-contain"
           />
         </div>
         <div className="flex item-center gap-6 max-md:hidden">
