@@ -1,4 +1,5 @@
 import logo from "../assets/logo.png";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
@@ -18,24 +19,29 @@ export default function Header() {
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <a
-            href="#home"
-            className="px-4 py-2 rounded-full bg-green-300 text-gray-800 font-semibold hover:text-purple-600 hover:scale-105 transition-all duration-200"
+          <Link
+            to="/"
+            className="px-4 py-2 rounded-full bg-green-300 text-gray-800 
+            font-semibold hover:text-purple-600 hover:scale-105 transition-all duration-200"
           >
             Home
-          </a>
-          <a
-            href="/register"
-            className="px-4 py-2 rounded-full bg-lime-300 text-gray-800 font-semibold hover:text-purple-600 hover:scale-105 transition-all duration-200"
+          </Link>
+
+          <Link
+            to="/register"
+            className="px-4 py-2 rounded-full bg-lime-300 text-gray-800 
+            font-semibold hover:text-purple-600 hover:scale-105 transition-all duration-200"
           >
             Register
-          </a>
-          <a
-            href="#review"
-            className="px-4 py-2 rounded-full bg-yellow-300 text-gray-800 font-semibold hover:text-purple-600 hover:scale-105 transition-all duration-200"
+          </Link>
+
+          <Link
+            to="/booking"
+            className="px-4 py-2 rounded-full bg-yellow-300 text-gray-800 
+            font-semibold hover:text-purple-600 hover:scale-105 transition-all duration-200"
           >
-            Review
-          </a>
+            Booking
+          </Link>
         </nav>
       </div>
     </header>

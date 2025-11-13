@@ -2,7 +2,7 @@ export default function RegisterForm() {
   return (
     <section
       id="register"
-      className="min-h-screen flex flex-col items-center justify-center bg-white pt-32 pb-20 px-6"
+      className="min-h-screen flex flex-col items-center justify-center bg-white pt-32 pb-20 px-6 scroll-mt-28"
     >
       <h2 className="text-4xl font-bold mb-8 text-gray-800">Register</h2>
       <form className="bg-gray-100 p-8 rounded-2xl shadow-md w-full max-w-md">
@@ -15,7 +15,9 @@ export default function RegisterForm() {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2 font-semibold">Email</label>
+          <label className="block text-gray-700 mb-2 font-semibold">
+            Email
+          </label>
           <input
             type="email"
             placeholder="Enter your email"
@@ -27,6 +29,12 @@ export default function RegisterForm() {
           className="w-full py-2 mt-4 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white font-semibold rounded-full hover:opacity-90 transition"
         >
           Submit
+        </button>
+        <button
+          type="button"
+          className="w-full py-2 mt-4 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white font-semibold rounded-full hover:opacity-90 transition"
+        >
+          Back
         </button>
       </form>
     </section>
