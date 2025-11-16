@@ -30,12 +30,7 @@ export default function RegisterForm() {
         >
           Submit
         </button>
-        <button
-          type="button"
-          className="w-full py-2 mt-4 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white font-semibold rounded-full hover:opacity-90 transition"
-        >
-          Back
-        </button>
+        
       </form>
     </section>
   );
