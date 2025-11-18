@@ -167,9 +167,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const totalPrice = calculateTotalPrice(destination.price, formData.numberOfPeople);
 
   return (
-    <section id = "booking" className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+    <section id = "booking" className="min-h-screen flex flex-col items-center justify-center bg-white">
+      <form  className="rounded-2xl shadow-md w-full max-w-md bg-gray-100 p-8 ">
+        <div className="mb-4 mt-2">
+        <label className="block text-sm font-medium text-gray-800 mb-1">
           <IconUser /> Full Name *
         </label>
         <input
@@ -187,7 +188,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       </div>
 
       {/* Email */}
-      <div>
+      <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">
           <IconMail /> Email *
         </label>
@@ -206,7 +207,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       </div>
 
       {/* Phone */}
-      <div>
+      <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">
           <IconPhone /> Phone *
         </label>
@@ -225,7 +226,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       </div>
 
       {/* Travel Date */}
-      <div>
+      <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">
           <IconCalendar /> Travel Date *
         </label>
@@ -244,7 +245,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       </div>
 
       {/* Number of People */}
-      <div>
+      <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">
           <IconUsers /> Number of People *
         </label>
@@ -280,7 +281,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       </div>
 
       {/* Buttons */}
-      <div className="flex space-x-3">
+      <div className="flex space-x-3 mt-2">
         <button
           type="button"
           onClick={onCancel}
@@ -295,6 +296,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           Confirm Booking
         </button>
       </div>
+      </form>
     </section>
   );
 };
