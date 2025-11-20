@@ -168,6 +168,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
   return (
     <section id = "booking" className="min-h-screen flex flex-col items-center justify-center bg-white">
+      <h2 className="text-4xl font-bold mt-4 mb-8 text-gray-800">Booking Form</h2>
       <form  className="rounded-2xl shadow-md w-full max-w-md bg-gray-100 p-8 ">
         <div className="mb-4 mt-2">
         <label className="block text-sm font-medium text-gray-800 mb-1">
@@ -291,7 +292,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
         </button>
         <button
           onClick={handleSubmit}
-          className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white font-semibold rounded-full hover:opacity-90 transition"
+          className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white font-semibold rounded-full hover:opacity-90 transition duration-200"
         >
           Confirm Booking
         </button>
