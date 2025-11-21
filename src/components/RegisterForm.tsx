@@ -2,7 +2,7 @@ export default function RegisterForm() {
   return (
     <section
       id="register"
-      className="min-h-screen flex flex-col items-center justify-center bg-white pt-32 pb-20 px-6 scroll-mt-28"
+      className="min-h-screen flex flex-col items-center justify-center bg-white pt-10 pb-15 px-6"
     >
       <h2 className="text-4xl font-bold mb-8 text-gray-800">Register</h2>
       <form className="bg-gray-100 p-8 rounded-2xl shadow-md w-full max-w-md">
