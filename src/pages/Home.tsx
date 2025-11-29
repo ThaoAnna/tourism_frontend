@@ -20,12 +20,13 @@ export default function Home() {
   });
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    
+      <div className="relative min-h-screen overflow-hidden">
       {/* === Aurora background === */}
       <AuroraCanvas
         className="absolute inset-0 -z-10 h-full w-full"
         colors={["#00ff87", "#60efff", "#0061ff", "#ff0099"]}
-        speed={0.25}
+        speed={0.5}
         layers={3}
         interactive
       />
@@ -55,5 +56,6 @@ export default function Home() {
         <Footer />
       </div>
     </div>
+    
   );
 }

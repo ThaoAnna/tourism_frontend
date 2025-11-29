@@ -1,9 +1,19 @@
+import { AuroraCanvas } from "../components/ui/aurora-canvas";
+
 export default function RegisterForm() {
   return (
     <section
       id="register"
-      className="min-h-screen flex flex-col items-center justify-center bg-white pt-10 pb-15 px-6"
+      className="pt-20 flex flex-col items-center justify-center"
     >
+      <AuroraCanvas
+              className="absolute inset-0 -z-10 h-full w-full"
+              colors={["#00ff87", "#60efff", "#0061ff", "#ff0099"]}
+              speed={0.25}
+              layers={3}
+              interactive
+            />
+
       <h2 className="text-4xl font-bold mb-8 text-gray-800">Register</h2>
       <form className="bg-gray-100 p-8 rounded-2xl shadow-md w-full max-w-md">
         <div className="mb-4">

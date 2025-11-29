@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { AuroraCanvas } from "../components/ui/aurora-canvas";
 // ---------------------------
 // Helper functions (no imports)
 // ---------------------------
@@ -167,7 +167,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const totalPrice = calculateTotalPrice(destination.price, formData.numberOfPeople);
 
   return (
-    <section id = "booking" className="min-h-screen flex flex-col items-center justify-center bg-white">
+    <section id = "booking" className="pt-10 flex flex-col items-center justify-center bg-white">
+      
       <h2 className="text-4xl font-bold mt-4 mb-8 text-gray-800">Booking Form</h2>
       <form  className="rounded-2xl shadow-md w-full max-w-md bg-gray-100 p-8 ">
         <div className="mb-4 mt-2">
