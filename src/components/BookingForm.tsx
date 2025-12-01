@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { AuroraCanvas } from "../components/ui/aurora-canvas";
 // ---------------------------
 // Helper functions (no imports)
 // ---------------------------
