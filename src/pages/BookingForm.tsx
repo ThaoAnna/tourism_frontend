@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-// ---------------------------
-// Helper functions (no imports)
-// ---------------------------
+
 const formatPrice = (price: number): string => {
   return `$${price.toFixed(2)}`;
 };
@@ -15,9 +13,7 @@ const getTodayDate = (): string => {
   return today.toISOString().split("T")[0];
 };
 
-// ---------------------------
-// Inline icons using SVG (no lucide-react)
-// ---------------------------
+
 const IconUser = () => (
   <svg
     className="w-4 h-4 inline mr-1"
