@@ -13,7 +13,6 @@ const getTodayDate = (): string => {
   return today.toISOString().split("T")[0];
 };
 
-
 const IconUser = () => (
   <svg
     className="w-4 h-4 inline mr-1"
@@ -82,11 +81,9 @@ const IconUsers = () => (
   </svg>
 );
 
-// ---------------------------
-// Type definitions
-// ---------------------------
 interface Destination {
   id: string | number;
+  name?: string;
   price: number;
 }
 
@@ -112,9 +109,6 @@ interface BookingFormProps {
   onCancel: () => void;
 }
 
-// ---------------------------
-// Component
-// ---------------------------
 const BookingForm: React.FC<BookingFormProps> = ({
   destination,
   onSubmit,
@@ -152,8 +146,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if (validateForm()) {
       onSubmit({ ...formData, destinationId: destination.id });
     }
@@ -162,138 +155,148 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const totalPrice = calculateTotalPrice(destination.price, formData.numberOfPeople);
 
   return (
-    <section id = "booking" className="pt-10 flex flex-col items-center justify-center bg-white">
+    <section id="booking" className="pt-6 sm:pt-8 lg:pt-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white min-h-screen">
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 sm:mt-4 mb-4 sm:mb-6 lg:mb-8 text-gray-800 text-center">
+        Booking Form
+      </h2>
       
-      <h2 className="text-4xl font-bold mt-4 mb-8 text-gray-800">Booking Form</h2>
-      <form  className="rounded-2xl shadow-md w-full max-w-md bg-gray-100 p-8 ">
-        <div className="mb-4 mt-2">
-        <label className="block text-sm font-medium text-gray-800 mb-1">
-          <IconUser /> Full Name *
-        </label>
-        <input
-          type="text"
-          value={formData.customerName}
-          onChange={(e) => handleChange("customerName", e.target.value)}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${
-            errors.customerName ? "border-red-500" : "border-gray-300"
-          }`}
-          placeholder="John Doe"
-        />
-        {errors.customerName && (
-          <p className="text-red-500 text-xs mt-1">{errors.customerName}</p>
-        )}
-      </div>
-
-      {/* Email */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          <IconMail /> Email *
-        </label>
-        <input
-          type="email"
-          value={formData.customerEmail}
-          onChange={(e) => handleChange("customerEmail", e.target.value)}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${
-            errors.customerEmail ? "border-red-500" : "border-gray-300"
-          }`}
-          placeholder="john@example.com"
-        />
-        {errors.customerEmail && (
-          <p className="text-red-500 text-xs mt-1">{errors.customerEmail}</p>
-        )}
-      </div>
-
-      {/* Phone */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          <IconPhone /> Phone *
-        </label>
-        <input
-          type="tel"
-          value={formData.customerPhone}
-          onChange={(e) => handleChange("customerPhone", e.target.value)}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${
-            errors.customerPhone ? "border-red-500" : "border-gray-300"
-          }`}
-          placeholder="+1 234 567 8900"
-        />
-        {errors.customerPhone && (
-          <p className="text-red-500 text-xs mt-1">{errors.customerPhone}</p>
-        )}
-      </div>
-
-      {/* Travel Date */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          <IconCalendar /> Travel Date *
-        </label>
-        <input
-          type="date"
-          value={formData.travelDate}
-          onChange={(e) => handleChange("travelDate", e.target.value)}
-          min={getTodayDate()}
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${
-            errors.travelDate ? "border-red-500" : "border-gray-300"
-          }`}
-        />
-        {errors.travelDate && (
-          <p className="text-red-500 text-xs mt-1">{errors.travelDate}</p>
-        )}
-      </div>
-
-      {/* Number of People */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          <IconUsers /> Number of People *
-        </label>
-        <input
-          type="number"
-          min={1}
-          max={10}
-          value={formData.numberOfPeople}
-          onChange={(e) =>
-            handleChange("numberOfPeople", parseInt(e.target.value) || 1)
-          }
-          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none ${
-            errors.numberOfPeople ? "border-red-500" : "border-gray-300"
-          }`}
-        />
-        {errors.numberOfPeople && (
-          <p className="text-red-500 text-xs mt-1">{errors.numberOfPeople}</p>
-        )}
-      </div>
-
-      {/* Total Price */}
-      <div className="bg-blue-50 p-4 rounded-lg">
-        <div className="flex justify-between items-center">
-          <span className="font-medium text-gray-700">Total Price:</span>
-          <span className="text-2xl font-bold text-blue-600">
-            {formatPrice(totalPrice)}
-          </span>
-        </div>
-        <p className="text-xs text-gray-600 mt-1">
-          {formatPrice(destination.price)} × {formData.numberOfPeople}{" "}
-          {formData.numberOfPeople === 1 ? "person" : "people"}
+      {destination.name && (
+        <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 text-center">
+          {destination.name}
         </p>
-      </div>
+      )}
 
-      {/* Buttons */}
-      <div className="flex space-x-3 mt-2">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors duration-200"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={handleSubmit}
-          className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white font-semibold rounded-full hover:opacity-90 transition duration-200"
-        >
-          Confirm Booking
-        </button>
+      <div className="rounded-2xl shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg bg-gray-100 p-4 sm:p-6 lg:p-8">
+        {/* Full Name */}
+        <div className="mb-3 sm:mb-4">
+          <label className="block text-xs sm:text-sm font-medium text-gray-800 mb-1">
+            <IconUser /> Full Name *
+          </label>
+          <input
+            type="text"
+            value={formData.customerName}
+            onChange={(e) => handleChange("customerName", e.target.value)}
+            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
+              errors.customerName ? "border-red-500" : "border-gray-300"
+            }`}
+            placeholder="John Doe"
+          />
+          {errors.customerName && (
+            <p className="text-red-500 text-xs mt-1">{errors.customerName}</p>
+          )}
+        </div>
+
+        {/* Email */}
+        <div className="mb-3 sm:mb-4">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+            <IconMail /> Email *
+          </label>
+          <input
+            type="email"
+            value={formData.customerEmail}
+            onChange={(e) => handleChange("customerEmail", e.target.value)}
+            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
+              errors.customerEmail ? "border-red-500" : "border-gray-300"
+            }`}
+            placeholder="john@example.com"
+          />
+          {errors.customerEmail && (
+            <p className="text-red-500 text-xs mt-1">{errors.customerEmail}</p>
+          )}
+        </div>
+
+        {/* Phone */}
+        <div className="mb-3 sm:mb-4">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+            <IconPhone /> Phone *
+          </label>
+          <input
+            type="tel"
+            value={formData.customerPhone}
+            onChange={(e) => handleChange("customerPhone", e.target.value)}
+            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
+              errors.customerPhone ? "border-red-500" : "border-gray-300"
+            }`}
+            placeholder="+1 234 567 8900"
+          />
+          {errors.customerPhone && (
+            <p className="text-red-500 text-xs mt-1">{errors.customerPhone}</p>
+          )}
+        </div>
+
+        {/* Travel Date */}
+        <div className="mb-3 sm:mb-4">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+            <IconCalendar /> Travel Date *
+          </label>
+          <input
+            type="date"
+            value={formData.travelDate}
+            onChange={(e) => handleChange("travelDate", e.target.value)}
+            min={getTodayDate()}
+            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
+              errors.travelDate ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.travelDate && (
+            <p className="text-red-500 text-xs mt-1">{errors.travelDate}</p>
+          )}
+        </div>
+
+        {/* Number of People */}
+        <div className="mb-3 sm:mb-4">
+          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+            <IconUsers /> Number of People *
+          </label>
+          <input
+            type="number"
+            min={1}
+            max={10}
+            value={formData.numberOfPeople}
+            onChange={(e) =>
+              handleChange("numberOfPeople", parseInt(e.target.value) || 1)
+            }
+            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
+              errors.numberOfPeople ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.numberOfPeople && (
+            <p className="text-red-500 text-xs mt-1">{errors.numberOfPeople}</p>
+          )}
+        </div>
+
+        {/* Total Price */}
+        <div className="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6">
+          <div className="flex justify-between items-center">
+            <span className="text-sm sm:text-base font-medium text-gray-700">Total Price:</span>
+            <span className="text-xl sm:text-2xl font-bold text-blue-600">
+              {formatPrice(totalPrice)}
+            </span>
+          </div>
+          <p className="text-xs text-gray-600 mt-1">
+            {formatPrice(destination.price)} × {formData.numberOfPeople}{" "}
+            {formData.numberOfPeople === 1 ? "person" : "people"}
+          </p>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="w-full sm:flex-1 bg-gray-200 text-gray-700 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold hover:bg-gray-300 transition-colors duration-200"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="w-full sm:flex-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold hover:opacity-90 transition duration-200"
+          >
+            Confirm Booking
+          </button>
+        </div>
       </div>
-      </form>
     </section>
   );
 };
