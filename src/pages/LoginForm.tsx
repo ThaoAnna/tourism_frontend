@@ -1,9 +1,9 @@
 import { AuroraCanvas } from "../components/ui/aurora-canvas";
 
-export default function RegisterForm() {
+export default function LoginForm() {
   return (
     <section
-      id="register"
+      id="login"
       className="pt-20 flex flex-col items-center justify-center"
     >
       <AuroraCanvas
@@ -14,7 +14,7 @@ export default function RegisterForm() {
               interactive
             />
 
-      <h2 className="text-4xl font-bold mb-8 text-gray-800">Register</h2>
+      <h2 className="text-4xl font-bold mb-8 text-gray-800">Login</h2>
       <form className="bg-gray-100 p-8 rounded-2xl shadow-md w-full max-w-md">
         <div className="mb-4">
           <label className="block text-gray-700 mb-2 font-semibold">Name</label>

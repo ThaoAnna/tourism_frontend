@@ -1,7 +1,7 @@
 // App.tsx
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import RegisterForm from "./pages/RegisterForm";
+import LoginForm from "./pages/LoginForm";
 import BookingForm from "./pages/BookingForm";
 import Header from "./components/Header";
 
@@ -15,7 +15,7 @@ export default function App() {
       <div className="pt-20" /> {/* spacing below fixed header */}
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/register" component={RegisterForm} />
+        <Route path="/login" component={LoginForm} />
         <Route
           path="/booking"
           render={(routeProps) => (

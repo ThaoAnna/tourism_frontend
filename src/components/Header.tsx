@@ -28,11 +28,11 @@ export default function Header() {
           </Link>
 
           <Link
-            to="/register"
+            to="/login"
             className="px-4 py-2 rounded-full bg-lime-300 text-gray-800 
             font-semibold hover:text-purple-600 hover:scale-105 transition-all duration-200"
           >
-            Register
+            Login
           </Link>
 
           <Link

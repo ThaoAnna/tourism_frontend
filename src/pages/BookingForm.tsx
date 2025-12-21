@@ -155,7 +155,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const totalPrice = calculateTotalPrice(destination.price, formData.numberOfPeople);
 
   return (
-    <section id="booking" className="pt-6 sm:pt-8 lg:pt-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white min-h-screen">
+    <section id="booking" className="pt-6 pb-6 sm:pt-8 lg:pt-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white min-h-screen">
       <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 sm:mt-4 mb-4 sm:mb-6 lg:mb-8 text-gray-800 text-center">
         Booking Form
       </h2>
