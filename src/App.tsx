@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import LoginForm from "./pages/LoginForm";
 import BookingForm from "./pages/BookingForm";
 import Header from "./components/Header";
+import RegisterForm from "./pages/RegisterForm";
 
 export default function App() {
   // Example destination (you can replace with dynamic data later)
@@ -16,6 +17,8 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/login" component={LoginForm} />
+        <Route path="/registerForm" component={RegisterForm} />
+
         <Route
           path="/booking"
           render={(routeProps) => (
