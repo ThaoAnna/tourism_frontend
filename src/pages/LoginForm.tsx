@@ -8,12 +8,12 @@ export default function LoginForm() {
       className="pt-10 pb-10 flex flex-col items-center justify-center"
     >
       <AuroraCanvas
-              className="absolute inset-0 -z-10 h-full w-full"
-              colors={["#00ff87", "#60efff", "#0061ff", "#ff0099"]}
-              speed={0.25}
-              layers={3}
-              interactive
-            />
+        className="absolute inset-0 -z-10 h-full w-full"
+        colors={["#00ff87", "#60efff", "#0061ff", "#ff0099"]}
+        speed={0.25}
+        layers={3}
+        interactive
+      />
 
       <h2 className="text-4xl font-bold mb-8 text-gray-800">Login</h2>
       <form className="bg-gray-100 p-8 rounded-2xl shadow-md w-full max-w-md">
@@ -44,12 +44,12 @@ export default function LoginForm() {
           Submit
         </button>
 
-        <Link 
-        to="/registerForm"
-        className="flex align-item items-center pt-4 text-l ">
-        <h4>Don't have account yet? Sign in </h4>
+        <Link
+          to="/registerForm"
+          className="flex align-item items-center pt-4 text-l "
+        >
+          <h4>Don't have account yet? Sign in </h4>
         </Link>
-        
       </form>
     </section>
   );
