@@ -1,4 +1,5 @@
-import type { Tour } from '../components/TourCard';
+// import type {Tour} from '../components/TourCard';
+import type { Tour } from '../types/index';
 
 export const toursData: Tour[] = [
   {

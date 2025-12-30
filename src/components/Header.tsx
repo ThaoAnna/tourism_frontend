@@ -1,4 +1,4 @@
-import logo from "../assets/logo.png";
+// import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 
 export default function Header() {
@@ -8,7 +8,7 @@ export default function Header() {
         {/* Logo */}
         <div className="flex items-center space-x-3">
           <img
-            src={logo}
+            // src={logo}
             alt="Wanderluster logo"
             className="h-12 w-12 object-contain"
           />
@@ -46,4 +46,4 @@ export default function Header() {
       </div>
     </header>
   );
-}
+};

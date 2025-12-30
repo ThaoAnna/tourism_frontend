@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { User, Mail, Phone, Calendar, Users } from "lucide-react";
 import type { Tour, BookingRequest, FormErrors } from "../types/index";
-import type {
+import {
   formatPrice,
   calculateTotalPrice,
   getTodayDate,
