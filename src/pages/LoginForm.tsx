@@ -1,12 +1,16 @@
 import { AuroraCanvas } from "../components/ui/aurora-canvas";
 import { Link } from "react-router-dom";
+import Header from "../components/Header";
 
 export default function LoginForm() {
   return (
     <section
       id="login"
-      className="pt-10 pb-10 flex flex-col items-center justify-center"
+      className="pt-20 pb-10 flex flex-col items-center justify-center"
     >
+      <div className="pb-10 pt-0">
+        <Header/>
+      </div>
       <AuroraCanvas
         className="absolute inset-0 -z-10 h-full w-full"
         colors={["#00ff87", "#60efff", "#0061ff", "#ff0099"]}

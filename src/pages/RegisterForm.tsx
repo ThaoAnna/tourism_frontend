@@ -1,11 +1,13 @@
-
+import Header from "../components/Header";
 export default function RegisterForm() {
   return (
+    
     <section
       id="registerForm"
       className="pt-10 pb-10 flex flex-col items-center justify-center"
     >
-
+      <Header>
+    </Header>
       <h2 className="text-4xl font-bold mb-8 text-gray-800">Register</h2>
       <form className="bg-gray-100 p-8 rounded-2xl shadow-md w-full max-w-md">
         <div className="mb-4">
