@@ -1,13 +1,15 @@
 import Header from "../components/Header";
+
+
 export default function RegisterForm() {
   return (
-    
     <section
-      id="registerForm"
+      id="register"
       className="pt-10 pb-10 flex flex-col items-center justify-center"
     >
-      <Header>
-    </Header>
+      <div className="pb-10 pt-0">
+        <Header />
+      </div>
       <h2 className="text-4xl font-bold mb-8 text-gray-800">Register</h2>
       <form className="bg-gray-100 p-8 rounded-2xl shadow-md w-full max-w-md">
         <div className="mb-4">
@@ -18,7 +20,7 @@ export default function RegisterForm() {
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-400 focus:outline-none"
           />
         </div>
-        
+
         <div className="mb-4">
           <label className="block text-gray-700 mb-2 font-semibold">
             Phone Number
@@ -55,9 +57,6 @@ export default function RegisterForm() {
         >
           Register
         </button>
-
-        
-        
       </form>
     </section>
   );

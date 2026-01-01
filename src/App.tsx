@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import TourDetail from "./pages/TourDetail";
 import LoginForm from "./pages/LoginForm";
 import RegisterForm from "./pages/RegisterForm";
+import BookingForm from "./pages/BookingForm";
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,8 @@ const App: React.FC = () => {
         <Route path="/tour/:id" component={TourDetail} />
         <Route path="/login" component={LoginForm} />
         <Route path="/register" component={RegisterForm} />
+        <Route path="/booking" component={BookingForm} />
+
       </Switch>
     </BrowserRouter>
   );

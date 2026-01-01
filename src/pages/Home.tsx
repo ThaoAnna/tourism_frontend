@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import SearchBar from "../components/SearchBar";
 import FilterDropdown from "../components/FilterDropdown";
 import TourList from "../components/TourList";
-import BookingForm from "../components/BookingForm";
+import BookingForm from "../pages/BookingForm";
 import type { Tour, BookingRequest } from "../types";
 import { CATEGORIES } from "../utils/constants";
 import { toursData } from "../data/tour";

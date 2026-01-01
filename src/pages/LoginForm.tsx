@@ -8,9 +8,6 @@ export default function LoginForm() {
       id="login"
       className="pt-20 pb-10 flex flex-col items-center justify-center"
     >
-      <div className="pb-10 pt-0">
-        <Header/>
-      </div>
       <AuroraCanvas
         className="absolute inset-0 -z-10 h-full w-full"
         colors={["#00ff87", "#60efff", "#0061ff", "#ff0099"]}
@@ -18,7 +15,9 @@ export default function LoginForm() {
         layers={3}
         interactive
       />
-
+      <div className="pb-10 pt-0">
+        <Header />
+      </div>
       <h2 className="text-4xl font-bold mb-8 text-gray-800">Login</h2>
       <form className="bg-gray-100 p-8 rounded-2xl shadow-md w-full max-w-md">
         <div className="mb-4">
@@ -49,7 +48,7 @@ export default function LoginForm() {
         </button>
 
         <Link
-          to="/registerForm"
+          to="/register"
           className="flex align-item items-center pt-4 text-l "
         >
           <h4>Don't have account yet? Sign in </h4>

@@ -3,13 +3,13 @@ import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import BookingForm from "../components/BookingForm";
+import BookingForm from "../pages/BookingForm";
 import type { Tour, BookingRequest } from "../types/index";
 import { toursData } from "../data/tour";
 import {
   MapPin,
   Clock,
-  DollarSign,
+  // DollarSign,
   Navigation,
   ArrowLeft,
   CheckCircle,

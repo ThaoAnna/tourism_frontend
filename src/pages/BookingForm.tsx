@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Header from "../components/Header";
 
 const formatPrice = (price: number): string => {
   return `$${price.toFixed(2)}`;
@@ -159,7 +160,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
       <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 sm:mt-4 mb-4 sm:mb-6 lg:mb-8 text-gray-800 text-center">
         Booking Form
       </h2>
-      
+      <div className="pb-10 pt-0">
+              <Header/>
+            </div>
       {destination.name && (
         <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 text-center">
           {destination.name}
