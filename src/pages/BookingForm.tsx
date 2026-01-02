@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
+import type { Tour } from "../types/index";
 
 const formatPrice = (price: number): string => {
-  return `$${price.toFixed(2)}`;
+  return `$${price.toLocaleString()}`;
 };
 
-const calculateTotalPrice = (pricePerPerson: number, people: number): number => {
-  return pricePerPerson * people;
+const calculateTotalPrice = (priceMin: number, priceMax: number, people: number): { min: number; max: number } => {
+  return {
+    min: priceMin * people,
+    max: priceMax * people
+  };
 };
 
 const getTodayDate = (): string => {
@@ -82,12 +86,6 @@ const IconUsers = () => (
   </svg>
 );
 
-interface Destination {
-  id: string | number;
-  name?: string;
-  price: number;
-}
-
 interface BookingFormData {
   customerName: string;
   customerEmail: string;
@@ -105,13 +103,13 @@ interface BookingFormErrors {
 }
 
 interface BookingFormProps {
-  destination: Destination;
-  onSubmit: (data: BookingFormData & { destinationId: string | number }) => void;
+  tour: Tour;
+  onSubmit: (data: BookingFormData & { tourId: number }) => void;
   onCancel: () => void;
 }
 
 const BookingForm: React.FC<BookingFormProps> = ({
-  destination,
+  tour,
   onSubmit,
   onCancel,
 }) => {
@@ -149,11 +147,15 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
   const handleSubmit = () => {
     if (validateForm()) {
-      onSubmit({ ...formData, destinationId: destination.id });
+      onSubmit({ ...formData, tourId: tour?.id || 0 });
     }
   };
 
-  const totalPrice = calculateTotalPrice(destination.price, formData.numberOfPeople);
+  const totalPrice = calculateTotalPrice(
+    tour?.totalPrice?.min || 0,
+    tour?.totalPrice?.max || 0,
+    formData.numberOfPeople
+  );
 
   return (
     <section id="booking" className="pt-6 pb-6 sm:pt-8 lg:pt-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white min-h-screen">
@@ -161,13 +163,29 @@ const BookingForm: React.FC<BookingFormProps> = ({
         Booking Form
       </h2>
       <div className="pb-10 pt-0">
-              <Header/>
+        <Header />
+      </div>
+
+      {/* Check if tour exists */}
+      {!tour ? (
+        <div className="text-center text-red-600">
+          <p>Tour information not available. Please select a tour first.</p>
+        </div>
+      ) : (
+        <>
+          {/* Tour Information */}
+          <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg mb-6">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
+                {tour.name}
+              </h3>
+              <div className="text-sm text-gray-600 space-y-1">
+                <p><span className="font-semibold">Duration:</span> {tour.duration} days</p>
+                <p><span className="font-semibold">Style:</span> {tour.style}</p>
+                <p><span className="font-semibold">Route:</span> {tour.route?.join(" → ")}</p>
+              </div>
             </div>
-      {destination.name && (
-        <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 text-center">
-          {destination.name}
-        </p>
-      )}
+          </div>
 
       <div className="rounded-2xl shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg bg-gray-100 p-4 sm:p-6 lg:p-8">
         {/* Full Name */}
@@ -270,16 +288,32 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
         {/* Total Price */}
         <div className="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6">
-          <div className="flex justify-between items-center">
-            <span className="text-sm sm:text-base font-medium text-gray-700">Total Price:</span>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm sm:text-base font-medium text-gray-700">Total Price Range:</span>
             <span className="text-xl sm:text-2xl font-bold text-blue-600">
-              {formatPrice(totalPrice)}
+              {formatPrice(totalPrice.min)} - {formatPrice(totalPrice.max)}
             </span>
           </div>
-          <p className="text-xs text-gray-600 mt-1">
-            {formatPrice(destination.price)} × {formData.numberOfPeople}{" "}
-            {formData.numberOfPeople === 1 ? "person" : "people"}
-          </p>
+          <div className="text-xs text-gray-600 space-y-1">
+            <p>
+              Base price: {formatPrice(tour?.totalPrice?.min || 0)} - {formatPrice(tour?.totalPrice?.max || 0)} per person
+            </p>
+            <p>
+              {formData.numberOfPeople} {formData.numberOfPeople === 1 ? "person" : "people"}
+            </p>
+          </div>
+          
+          {/* Price Breakdown */}
+          {tour?.priceBreakdown && (
+            <div className="mt-3 pt-3 border-t border-blue-200">
+              <p className="text-xs font-semibold text-gray-700 mb-2">Price includes (per person):</p>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p>• Transport: {formatPrice(tour.priceBreakdown.transport)}</p>
+                <p>• Hotel: {formatPrice(tour.priceBreakdown.hotel)}</p>
+                <p>• Food & Activities: {formatPrice(tour.priceBreakdown.foodAndActivities)}</p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Buttons */}
@@ -300,6 +334,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
           </button>
         </div>
       </div>
+      </>
+      )}
     </section>
   );
 };
