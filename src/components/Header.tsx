@@ -6,16 +6,18 @@ export default function Header() {
     <header className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-yellow-200 via-orange-200 to-pink-200 border-b border-black/10 shadow-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
         {/* Logo */}
-        <div className="flex items-center space-x-3">
+        <nav className="flex items-center space-x-3">
           <img
             // src={logo}
             alt="Wanderluster logo"
             className="h-12 w-12 object-contain"
           />
-          <h1 className="text-2xl font-extrabold text-gray-900 tracking-wide">
+          <Link 
+          to="/"
+          className="text-2xl font-extrabold text-gray-900 tracking-wide">
             Wanderluster
-          </h1>
-        </div>
+          </Link>
+        </nav>
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
