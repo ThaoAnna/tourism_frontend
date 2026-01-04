@@ -49,9 +49,9 @@ export default function LoginForm() {
 
         <Link
           to="/register"
-          className="w-full flex align-item items-center pt-4 text-l"
+          className="w-full flex align-item items-center  pt-4 text-l"
         >
-          <h4>Don't have account yet? Sign in </h4>
+          <h4 className="w-full text-right">Don't have account yet? Sign in </h4>
         </Link>
       </form>
     </section>
