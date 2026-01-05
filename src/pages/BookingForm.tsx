@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import type { Tour } from "../types/index";
 
@@ -102,17 +103,15 @@ interface BookingFormErrors {
   numberOfPeople?: string;
 }
 
-interface BookingFormProps {
-  tour: Tour;
-  onSubmit: (data: BookingFormData & { tourId: number }) => void;
-  onCancel: () => void;
+interface LocationState {
+  tour?: Tour;
 }
 
-const BookingForm: React.FC<BookingFormProps> = ({
-  tour,
-  onSubmit,
-  onCancel,
-}) => {
+const BookingForm: React.FC = () => {
+  const history = useHistory();
+  const location = useLocation<LocationState>();
+  const tour = location.state?.tour;
+
   const [formData, setFormData] = useState<BookingFormData>({
     customerName: "",
     customerEmail: "",
@@ -122,6 +121,13 @@ const BookingForm: React.FC<BookingFormProps> = ({
   });
 
   const [errors, setErrors] = useState<BookingFormErrors>({});
+
+  // Redirect to home if no tour data
+  useEffect(() => {
+    if (!tour) {
+      history.push('/');
+    }
+  }, [tour, history]);
 
   const validateForm = (): boolean => {
     const newErrors: BookingFormErrors = {};
@@ -146,10 +152,34 @@ const BookingForm: React.FC<BookingFormProps> = ({
   };
 
   const handleSubmit = () => {
-    if (validateForm()) {
-      onSubmit({ ...formData, tourId: tour?.id || 0 });
+    if (validateForm() && tour) {
+      const bookingData = {
+        ...formData,
+        tourId: tour.id,
+        tourName: tour.name,
+      };
+      
+      console.log('Booking submitted:', bookingData);
+      
+      // Here you would typically:
+      // 1. Send data to your backend API
+      // 2. Show success message
+      // 3. Redirect to confirmation page
+      
+      alert(`Booking confirmed for ${formData.customerName}!\nTour: ${tour.name}\nDate: ${formData.travelDate}\nPeople: ${formData.numberOfPeople}`);
+      
+      // Redirect back to home
+      history.push('/');
     }
   };
+
+  const handleCancel = () => {
+    history.goBack();
+  };
+
+  if (!tour) {
+    return null; // Will redirect in useEffect
+  }
 
   const totalPrice = calculateTotalPrice(
     tour?.totalPrice?.min || 0,
@@ -158,34 +188,27 @@ const BookingForm: React.FC<BookingFormProps> = ({
   );
 
   return (
-    <section id="booking" className="pt-6 pb-6 sm:pt-8 lg:pt-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white min-h-screen">
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 sm:mt-4 mb-4 sm:mb-6 lg:mb-8 text-gray-800 text-center">
+    <section id="booking" className=" pb-6 sm:pt-8 lg:pt-26 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white min-h-screen">
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-1 sm:mt-2 mb-2 sm:mb-3 lg:mb-4 text-gray-800 text-center">
         Booking Form
       </h2>
       <div className="pb-10 pt-0">
         <Header />
       </div>
 
-      {/* Check if tour exists */}
-      {!tour ? (
-        <div className="text-center text-red-600">
-          <p>Tour information not available. Please select a tour first.</p>
-        </div>
-      ) : (
-        <>
-          {/* Tour Information */}
-          <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg mb-6">
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
-                {tour.name}
-              </h3>
-              <div className="text-sm text-gray-600 space-y-1">
-                <p><span className="font-semibold">Duration:</span> {tour.duration} days</p>
-                <p><span className="font-semibold">Style:</span> {tour.style}</p>
-                <p><span className="font-semibold">Route:</span> {tour.route?.join(" → ")}</p>
-              </div>
-            </div>
+      {/* Tour Information */}
+      <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg mb-6">
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 sm:p-6">
+          <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
+            {tour.name}
+          </h3>
+          <div className="text-sm text-gray-600 space-y-1">
+            <p><span className="font-semibold">Duration:</span> {tour.duration} days</p>
+            <p><span className="font-semibold">Style:</span> {tour.style}</p>
+            <p><span className="font-semibold">Route:</span> {tour.route?.join(" → ")}</p>
           </div>
+        </div>
+      </div>
 
       <div className="rounded-2xl shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg bg-gray-100 p-4 sm:p-6 lg:p-8">
         {/* Full Name */}
@@ -320,7 +343,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <button
             type="button"
-            onClick={onCancel}
+            onClick={handleCancel}
             className="w-full sm:flex-1 bg-gray-200 text-gray-700 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold hover:bg-gray-300 transition-colors duration-200"
           >
             Cancel
@@ -334,8 +357,6 @@ const BookingForm: React.FC<BookingFormProps> = ({
           </button>
         </div>
       </div>
-      </>
-      )}
     </section>
   );
 };

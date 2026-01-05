@@ -1,15 +1,25 @@
 import React from 'react';
-import { MapPin, Clock, DollarSign, Navigation } from 'lucide-react';
+import { useHistory } from 'react-router-dom';
+import { Navigation } from 'lucide-react';
 import type { Tour } from '../types/index';
 import { formatPrice } from '../utils/helpers';
 
 interface TourCardProps {
   tour: Tour;
   onViewDetails: (tour: Tour) => void;
-  onBookClick: (tour: Tour) => void;
 }
 
-const TourCard: React.FC<TourCardProps> = ({ tour, onViewDetails, onBookClick }) => {
+const TourCard: React.FC<TourCardProps> = ({ tour, onViewDetails }) => {
+  const history = useHistory();
+
+  const handleBookNow = () => {
+    // Navigate to booking page with tour data in state
+    history.push({
+      pathname: '/booking',
+      state: { tour }
+    });
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <div className="relative cursor-pointer" onClick={() => onViewDetails(tour)}>
@@ -61,8 +71,8 @@ const TourCard: React.FC<TourCardProps> = ({ tour, onViewDetails, onBookClick })
               Details
             </button>
             <button
-              onClick={() => onBookClick(tour)}
-              className="bg-blue-600 text-white px-4 py-1 rounded text-sm hover:bg-blue-700 transition-colors duration-200 font-medium"
+              onClick={handleBookNow}
+              className="bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white px-4 py-1 rounded text-sm hover:opacity-90 transition-all duration-200 font-medium shadow-md"
             >
               Book Now
             </button>
