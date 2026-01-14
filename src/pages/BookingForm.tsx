@@ -317,9 +317,9 @@ const BookingForm: React.FC = () => {
         </div>
       </div>
 
-      <div className="rounded-2xl shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg bg-gray-100 p-4 sm:p-6 lg:p-8">
+        <div className="rounded-2xl shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg bg-gradient-to-r from-blue-50 to-purple-50 p-4 sm:p-6 lg:p-8">
         {/* Full Name */}
-        <div className="mb-3 sm:mb-4">
+        <div className="mb-3 sm:mb-4 ">
           <label className="block text-xs sm:text-sm font-medium text-gray-800 mb-1">
             <IconUser /> Full Name *
           </label>
