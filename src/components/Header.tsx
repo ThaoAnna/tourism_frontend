@@ -7,11 +7,11 @@ export default function Header() {
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
         {/* Logo */}
         <nav className="flex items-center space-x-3">
-          <img
-            // src={logo}
+          {/* <img
+            src={logo}
             alt="Wanderluster logo"
             className="h-12 w-12 object-contain"
-          />
+          /> */}
           <Link 
           to="/"
           className="text-2xl font-extrabold text-gray-900 tracking-wide">
