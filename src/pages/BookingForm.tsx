@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import type { Tour } from "../types/index";
+import TextField from '@mui/material/TextField';
+
 
 const formatPrice = (price: number): string => {
   return `$${price.toLocaleString()}`;
@@ -268,6 +270,10 @@ const BookingForm: React.FC = () => {
             <span className="font-semibold text-gray-800">{formData.travelDate}</span>
           </div>
           <div className="flex justify-between text-sm">
+            <TextField id="date" label="Date" variant="Date" />
+            <span className="font-semibold text-gray-800">{formData.travelDate}</span>
+          </div>
+          <div className="flex justify-between text-sm">
             <span className="text-gray-600">People:</span>
             <span className="font-semibold text-gray-800">{formData.numberOfPeople}</span>
           </div>
@@ -296,10 +302,10 @@ const BookingForm: React.FC = () => {
       {showSuccessModal && <SuccessModal />}
 
       <section id="booking" className="pb-6 sm:pt-8 lg:pt-26 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white min-h-screen">
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 sm:mt-4 mb-4 sm:mb-6 lg:mb-8 text-gray-800 text-center">
-        Booking Form
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 sm:mt-2 mb-2 sm:mb-3 lg:mb-4 text-gray-700 text-center">
+        {tour.name}
       </h2>
-      <div className="pb-10 pt-0">
+      <div className="pb-5 pt-0">
         <Header />
       </div>
 
@@ -307,11 +313,11 @@ const BookingForm: React.FC = () => {
       <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg mb-6">
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 sm:p-6">
           <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
-            {tour.name}
+            Tour details:
           </h3>
           <div className="text-sm text-gray-600 space-y-1">
             <p><span className="font-semibold">Duration:</span> {tour.duration} days</p>
-            <p><span className="font-semibold">Style:</span> {tour.style}</p>
+            {/* <p><span className="font-semibold">Style:</span> {tour.style}</p> */}
             <p><span className="font-semibold">Route:</span> {tour.route?.join(" → ")}</p>
           </div>
         </div>
