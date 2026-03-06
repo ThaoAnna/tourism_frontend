@@ -101,7 +101,7 @@ export const toursData: Tour[] = [
       min: 1600,
       max: 1750
     },
-    imageUrl: "https://images.unsplash.com/photo-1534113414509-0bd4d27b8e0c?w=800",
+    imageUrl: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800",
     highlights: [
       "St. Mark's Square and Doge's Palace",
       "David statue and Duomo cathedral",

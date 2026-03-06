@@ -9,7 +9,6 @@ import { toursData } from "../data/tour";
 import {
   MapPin,
   Clock,
-  // DollarSign,
   Navigation,
   ArrowLeft,
   CheckCircle,
