@@ -270,10 +270,6 @@ const BookingForm: React.FC = () => {
             <span className="font-semibold text-gray-800">{formData.travelDate}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <TextField id="date" label="Date" variant="Date" />
-            <span className="font-semibold text-gray-800">{formData.travelDate}</span>
-          </div>
-          <div className="flex justify-between text-sm">
             <span className="text-gray-600">People:</span>
             <span className="font-semibold text-gray-800">{formData.numberOfPeople}</span>
           </div>
@@ -459,7 +455,7 @@ const BookingForm: React.FC = () => {
             onClick={handleCancel}
             className="w-full sm:flex-1 bg-gray-200 text-gray-700 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold hover:bg-gray-300 transition-colors duration-200"
           >
-            Cancel
+            Back
           </button>
           <button
             type="button"
