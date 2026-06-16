@@ -7,13 +7,17 @@ import { formatPrice } from '../utils/helpers';
 interface TourCardProps {
   tour: Tour;
   onViewDetails: (tour: Tour) => void;
+  onBookClick?: (tour: Tour) => void;
 }
 
-const TourCard: React.FC<TourCardProps> = ({ tour, onViewDetails }) => {
+const TourCard: React.FC<TourCardProps> = ({ tour, onViewDetails, onBookClick }) => {
   const history = useHistory();
 
   const handleBookNow = () => {
-    // Navigate to booking page with tour data in state
+    if (onBookClick) {
+      onBookClick(tour);
+      return;
+    }
     history.push({
       pathname: '/booking',
       state: { tour }

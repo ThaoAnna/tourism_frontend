@@ -10,6 +10,7 @@ import BookingForm from "../pages/BookingForm";
 import type { Tour, BookingRequest } from "../types";
 import { CATEGORIES } from "../utils/constants";
 import { toursData } from "../data/tour";
+import { bookingService } from "../services/bookingService";
 
 const Home: React.FC = () => {
   const history = useHistory();
@@ -59,15 +60,10 @@ const Home: React.FC = () => {
   const handleBookingSubmit = async (
     bookingData: BookingRequest
   ): Promise<void> => {
-    try {
-      console.log("Booking submitted:", bookingData);
-      alert("Booking successful! Check your email for confirmation.");
-      setShowBookingModal(false);
-      setSelectedTour(null);
-    } catch (err) {
-      alert("Failed to create booking. Please try again.");
-      console.error("Error creating booking:", err);
-    }
+    await bookingService.create(bookingData);
+    alert("Booking successful! Check your email for confirmation.");
+    setShowBookingModal(false);
+    setSelectedTour(null);
   };
 
   return (

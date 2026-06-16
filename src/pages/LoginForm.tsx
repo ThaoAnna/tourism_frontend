@@ -51,7 +51,7 @@ export default function LoginForm() {
           to="/register"
           className="w-full flex align-item items-center pt-4 text-l"
         >
-          <h4 className="w-full text-center font-medium hover:text-sky-500">Don't have account yet? Sign in </h4>
+          <h4 className="w-full text-center font-medium hover:text-sky-500">Don't have an account yet? Sign up</h4>
         </Link>
       </form>
     </section>

@@ -1,25 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Header from "../components/Header";
-import type { Tour } from "../types/index";
-import TextField from '@mui/material/TextField';
-
-
-const formatPrice = (price: number): string => {
-  return `$${price.toLocaleString()}`;
-};
-
-const calculateTotalPrice = (priceMin: number, priceMax: number, people: number): { min: number; max: number } => {
-  return {
-    min: priceMin * people,
-    max: priceMax * people
-  };
-};
-
-const getTodayDate = (): string => {
-  const today = new Date();
-  return today.toISOString().split("T")[0];
-};
+import type { Tour, BookingRequest } from "../types/index";
+import { bookingService } from "../services/bookingService";
+import { formatPrice, getTodayDate, calculateTotalPriceRange } from "../utils/helpers";
 
 const IconUser = () => (
   <svg
@@ -109,10 +93,21 @@ interface LocationState {
   tour?: Tour;
 }
 
-const BookingForm: React.FC = () => {
+interface BookingFormProps {
+  tour?: Tour;
+  onSubmit?: (bookingData: BookingRequest) => Promise<void>;
+  onCancel?: () => void;
+}
+
+const BookingForm: React.FC<BookingFormProps> = ({
+  tour: tourProp,
+  onSubmit,
+  onCancel,
+}) => {
   const history = useHistory();
   const location = useLocation<LocationState>();
-  const tour = location.state?.tour;
+  const tour = tourProp ?? location.state?.tour;
+  const embedded = Boolean(tourProp);
 
   const [formData, setFormData] = useState<BookingFormData>({
     customerName: "",
@@ -126,12 +121,11 @@ const BookingForm: React.FC = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Redirect to home if no tour data
   useEffect(() => {
-    if (!tour) {
-      history.push('/');
+    if (!embedded && !tour) {
+      history.push("/");
     }
-  }, [tour, history]);
+  }, [tour, embedded, history]);
 
   const validateForm = (): boolean => {
     const newErrors: BookingFormErrors = {};
@@ -156,81 +150,55 @@ const BookingForm: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    if (validateForm() && tour) {
-      setIsSubmitting(true);
-      
-      const bookingData = {
-        ...formData,
-        tourId: tour.id,
-        tourName: tour.name,
-        tourDuration: tour.duration,
-        tourRoute: tour.route.join(" → "),
-        totalPriceMin: calculateTotalPrice(tour.totalPrice.min, tour.totalPrice.max, formData.numberOfPeople).min,
-        totalPriceMax: calculateTotalPrice(tour.totalPrice.min, tour.totalPrice.max, formData.numberOfPeople).max,
-      };
-      
-      try {
-        // TODO: Replace with your actual API endpoint
-        const response = await fetch('/api/bookings', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(bookingData),
-        });
+    if (!validateForm() || !tour) return;
 
-        if (response.ok) {
-          // Send confirmation email
-          await fetch('/api/send-confirmation-email', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              to: formData.customerEmail,
-              customerName: formData.customerName,
-              tourName: tour.name,
-              travelDate: formData.travelDate,
-              numberOfPeople: formData.numberOfPeople,
-              totalPrice: `${formatPrice(bookingData.totalPriceMin)} - ${formatPrice(bookingData.totalPriceMax)}`,
-            }),
-          });
+    setIsSubmitting(true);
 
-          // Show success modal
-          setShowSuccessModal(true);
-        } else {
-          alert('Booking failed. Please try again.');
-        }
-      } catch (error) {
-        console.error('Booking error:', error);
-        // For demo purposes, still show success modal
-        // In production, you'd show an error message
+    const bookingData: BookingRequest = {
+      customerName: formData.customerName,
+      customerEmail: formData.customerEmail,
+      customerPhone: formData.customerPhone,
+      tourId: tour.id,
+      travelDate: formData.travelDate,
+      numberOfPeople: formData.numberOfPeople,
+    };
+
+    try {
+      if (onSubmit) {
+        await onSubmit(bookingData);
+      } else {
+        await bookingService.create(bookingData);
         setShowSuccessModal(true);
-      } finally {
-        setIsSubmitting(false);
       }
+    } catch (error) {
+      console.error("Booking error:", error);
+      alert("Failed to create booking. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleCancel = () => {
-    history.goBack();
+    if (onCancel) {
+      onCancel();
+    } else {
+      history.goBack();
+    }
   };
 
   if (!tour) {
-    return null; // Will redirect in useEffect
+    return null;
   }
 
-  const totalPrice = calculateTotalPrice(
-    tour?.totalPrice?.min || 0,
-    tour?.totalPrice?.max || 0,
+  const totalPrice = calculateTotalPriceRange(
+    tour.totalPrice.min,
+    tour.totalPrice.max,
     formData.numberOfPeople
   );
 
-  // Success Modal Component
   const SuccessModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-fade-in">
-        {/* Success Icon */}
         <div className="flex justify-center mb-4">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
             <svg
@@ -249,21 +217,19 @@ const BookingForm: React.FC = () => {
           </div>
         </div>
 
-        {/* Success Message */}
         <h3 className="text-2xl font-bold text-center text-gray-800 mb-2">
-          Booking Confirmed! 🎉
+          Booking Confirmed!
         </h3>
         <p className="text-center text-gray-600 mb-6">
           Thank you, {formData.customerName}! Your booking has been confirmed.
-          A confirmation email has been sent to{" "}
+          A confirmation email will be sent to{" "}
           <span className="font-semibold">{formData.customerEmail}</span>
         </p>
 
-        {/* Booking Details */}
         <div className="bg-gray-50 rounded-lg p-4 mb-6 space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Tour:</span>
-            <span className="font-semibold text-gray-800">{tour?.name}</span>
+            <span className="font-semibold text-gray-800">{tour.name}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Date:</span>
@@ -281,9 +247,8 @@ const BookingForm: React.FC = () => {
           </div>
         </div>
 
-        {/* Back to Home Button */}
         <button
-          onClick={() => history.push('/')}
+          onClick={() => history.push("/")}
           className="w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white py-3 rounded-lg text-base font-semibold hover:opacity-90 transition duration-200 shadow-md"
         >
           Back to Home Page
@@ -292,36 +257,35 @@ const BookingForm: React.FC = () => {
     </div>
   );
 
-  return (
+  const formContent = (
     <>
-      {/* Success Modal */}
-      {showSuccessModal && <SuccessModal />}
+      {!embedded && (
+        <>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 sm:mt-2 mb-2 sm:mb-3 lg:mb-4 text-gray-700 text-center">
+            {tour.name}
+          </h2>
+          <div className="pb-5 pt-0">
+            <Header />
+          </div>
+        </>
+      )}
 
-      <section id="booking" className="pb-6 sm:pt-8 lg:pt-26 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white min-h-screen">
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 sm:mt-2 mb-2 sm:mb-3 lg:mb-4 text-gray-700 text-center">
-        {tour.name}
-      </h2>
-      <div className="pb-5 pt-0">
-        <Header />
-      </div>
-
-      {/* Tour Information */}
-      <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg mb-6">
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 sm:p-6">
-          <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
-            Tour details:
-          </h3>
-          <div className="text-sm text-gray-600 space-y-1">
-            <p><span className="font-semibold">Duration:</span> {tour.duration} days</p>
-            {/* <p><span className="font-semibold">Style:</span> {tour.style}</p> */}
-            <p><span className="font-semibold">Route:</span> {tour.route?.join(" → ")}</p>
+      {!embedded && (
+        <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg mb-6">
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 sm:p-6">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
+              Tour details:
+            </h3>
+            <div className="text-sm text-gray-600 space-y-1">
+              <p><span className="font-semibold">Duration:</span> {tour.duration} days</p>
+              <p><span className="font-semibold">Route:</span> {tour.route.join(" → ")}</p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-        <div className="rounded-2xl shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg bg-gradient-to-r from-blue-50 to-purple-50 p-4 sm:p-6 lg:p-8">
-        {/* Full Name */}
-        <div className="mb-3 sm:mb-4 ">
+      <div className={`rounded-2xl shadow-lg w-full ${embedded ? "" : "max-w-sm sm:max-w-md lg:max-w-lg"} bg-gradient-to-r from-blue-50 to-purple-50 p-4 sm:p-6 lg:p-8`}>
+        <div className="mb-3 sm:mb-4">
           <label className="block text-xs sm:text-sm font-medium text-gray-800 mb-1">
             <IconUser /> Full Name *
           </label>
@@ -339,7 +303,6 @@ const BookingForm: React.FC = () => {
           )}
         </div>
 
-        {/* Email */}
         <div className="mb-3 sm:mb-4">
           <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             <IconMail /> Email *
@@ -358,7 +321,6 @@ const BookingForm: React.FC = () => {
           )}
         </div>
 
-        {/* Phone */}
         <div className="mb-3 sm:mb-4">
           <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             <IconPhone /> Phone *
@@ -377,7 +339,6 @@ const BookingForm: React.FC = () => {
           )}
         </div>
 
-        {/* Travel Date */}
         <div className="mb-3 sm:mb-4">
           <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             <IconCalendar /> Travel Date *
@@ -396,7 +357,6 @@ const BookingForm: React.FC = () => {
           )}
         </div>
 
-        {/* Number of People */}
         <div className="mb-3 sm:mb-4">
           <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             <IconUsers /> Number of People *
@@ -418,7 +378,6 @@ const BookingForm: React.FC = () => {
           )}
         </div>
 
-        {/* Total Price */}
         <div className="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm sm:text-base font-medium text-gray-700">Total Price Range:</span>
@@ -428,15 +387,14 @@ const BookingForm: React.FC = () => {
           </div>
           <div className="text-xs text-gray-600 space-y-1">
             <p>
-              Base price: {formatPrice(tour?.totalPrice?.min || 0)} - {formatPrice(tour?.totalPrice?.max || 0)} per person
+              Base price: {formatPrice(tour.totalPrice.min)} - {formatPrice(tour.totalPrice.max)} per person
             </p>
             <p>
               {formData.numberOfPeople} {formData.numberOfPeople === 1 ? "person" : "people"}
             </p>
           </div>
-          
-          {/* Price Breakdown */}
-          {tour?.priceBreakdown && (
+
+          {tour.priceBreakdown && (
             <div className="mt-3 pt-3 border-t border-blue-200">
               <p className="text-xs font-semibold text-gray-700 mb-2">Price includes (per person):</p>
               <div className="text-xs text-gray-600 space-y-1">
@@ -448,7 +406,6 @@ const BookingForm: React.FC = () => {
           )}
         </div>
 
-        {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <button
             type="button"
@@ -462,7 +419,7 @@ const BookingForm: React.FC = () => {
             onClick={handleSubmit}
             disabled={isSubmitting}
             className={`w-full sm:flex-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition duration-200 ${
-              isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:opacity-90'
+              isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
             }`}
           >
             {isSubmitting ? (
@@ -486,12 +443,27 @@ const BookingForm: React.FC = () => {
                 Processing...
               </span>
             ) : (
-              'Confirm Booking'
+              "Confirm Booking"
             )}
           </button>
         </div>
       </div>
-    </section>
+    </>
+  );
+
+  if (embedded) {
+    return <>{formContent}</>;
+  }
+
+  return (
+    <>
+      {showSuccessModal && <SuccessModal />}
+      <section
+        id="booking"
+        className="pb-6 sm:pt-8 lg:pt-26 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white min-h-screen"
+      >
+        {formContent}
+      </section>
     </>
   );
 };

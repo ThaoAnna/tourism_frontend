@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import BookingForm from "../pages/BookingForm";
 import type { Tour, BookingRequest } from "../types/index";
 import { toursData } from "../data/tour";
+import { bookingService } from "../services/bookingService";
 import {
   MapPin,
   Clock,
@@ -31,13 +32,9 @@ const TourDetail: React.FC = () => {
   const handleBookingSubmit = async (
     bookingData: BookingRequest
   ): Promise<void> => {
-    try {
-      console.log("Booking submitted:", bookingData);
-      alert("Booking successful! Check your email for confirmation.");
-      setShowBookingModal(false);
-    } catch (err) {
-      alert("Failed to create booking. Please try again.");
-    }
+    await bookingService.create(bookingData);
+    alert("Booking successful! Check your email for confirmation.");
+    setShowBookingModal(false);
   };
 
   if (!tour) {

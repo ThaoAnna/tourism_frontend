@@ -15,6 +15,15 @@ export const calculateTotalPrice = (price: number, people: number): number => {
   return price * people; // Client-side calculation
 };
 
+export const calculateTotalPriceRange = (
+  priceMin: number,
+  priceMax: number,
+  people: number
+): { min: number; max: number } => ({
+  min: priceMin * people,
+  max: priceMax * people,
+});
+
 export const getTodayDate = (): string => {
   return new Date().toISOString().split('T')[0]; // For date input min value
 };
