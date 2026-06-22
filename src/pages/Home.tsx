@@ -7,6 +7,9 @@ import SearchBar from "../components/SearchBar";
 import FilterDropdown from "../components/FilterDropdown";
 import TourList from "../components/TourList";
 import BookingForm from "../pages/BookingForm";
+import PageShell from "../components/layout/PageShell";
+import Container from "../components/layout/Container";
+import Section from "../components/layout/Section";
 import type { Tour, BookingRequest } from "../types";
 import { CATEGORIES } from "../utils/constants";
 import { toursData } from "../data/tour";
@@ -67,12 +70,12 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <PageShell>
       <Header />
 
-      <div className="bg-white border-b sticky top-16 z-30">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex flex-col md:flex-row gap-4">
+      <div className="bg-white border-b border-gray-100 sticky top-16 z-30 shadow-sm">
+        <Container className="py-6 lg:py-8">
+          <div className="flex flex-col md:flex-row gap-4 lg:gap-6">
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
@@ -84,40 +87,47 @@ const Home: React.FC = () => {
               options={CATEGORIES}
             />
           </div>
-        </div>
+        </Container>
       </div>
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 py-8 w-full">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">
-            {selectedCategory === "all"
-              ? "All European Tours"
-              : CATEGORIES.find((c) => c.value === selectedCategory)?.label}
-          </h2>
-          <p className="text-gray-600 mt-1">
-            {filteredTours.length} tour{filteredTours.length !== 1 ? "s" : ""}{" "}
-            available
-          </p>
-        </div>
+      <main className="flex-1">
+        <Section>
+          <Container wide>
+            <div className="mb-10 lg:mb-14">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 tracking-tight">
+                {selectedCategory === "all"
+                  ? "All European Tours"
+                  : CATEGORIES.find((c) => c.value === selectedCategory)?.label}
+              </h2>
+              <p className="text-gray-600 mt-2 text-base">
+                {filteredTours.length} tour{filteredTours.length !== 1 ? "s" : ""}{" "}
+                available
+              </p>
+            </div>
 
-        <TourList
-          tours={filteredTours}
-          onViewDetails={handleViewDetails}
-          onBookClick={handleBookClick}
-          loading={loading}
-        />
+            <TourList
+              tours={filteredTours}
+              onViewDetails={handleViewDetails}
+              onBookClick={handleBookClick}
+              loading={loading}
+            />
+          </Container>
+        </Section>
       </main>
 
       <Footer />
 
       {showBookingModal && selectedTour && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">Book: {selectedTour.name}</h2>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-5">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-800">
+                Book: {selectedTour.name}
+              </h2>
               <button
                 onClick={() => setShowBookingModal(false)}
-                className="text-gray-500 hover:text-gray-700 text-3xl"
+                className="text-gray-400 hover:text-gray-600 text-3xl leading-none"
+                aria-label="Close booking modal"
               >
                 ×
               </button>
@@ -130,7 +140,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+    </PageShell>
   );
 };
 

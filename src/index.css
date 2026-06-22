@@ -1,1 +1,48 @@
 @import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased text-gray-800 bg-gray-50;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+@layer components {
+  /* Standard page container — 1280px max, responsive side margins */
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 md:px-8;
+  }
+
+  /* Wide gallery container — 1440px max for tour imagery grids */
+  .container-gallery {
+    @apply mx-auto w-full max-w-[1440px] px-5 md:px-8;
+  }
+
+  /* Readable prose block — ~65–75 characters per line */
+  .readable-content {
+    @apply mx-auto w-full max-w-[750px];
+  }
+
+  /* Vertical rhythm between major page sections */
+  .section-spacing {
+    @apply py-12 md:py-16 lg:py-24 xl:py-[7.5rem];
+  }
+
+  /* In-page section gaps (within a single page card) */
+  .section-gap {
+    @apply space-y-12 md:space-y-16 lg:space-y-24 xl:space-y-[7.5rem];
+  }
+
+  /* Tour card grid — 24px mobile/tablet, 32px desktop */
+  .tour-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8;
+  }
+}

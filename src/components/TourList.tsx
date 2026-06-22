@@ -12,9 +12,9 @@ interface TourListProps {
 const TourList: React.FC<TourListProps> = ({ tours, onViewDetails, onBookClick, loading }) => {
   if (loading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="tour-grid">
         {[1, 2, 3, 4, 5, 6].map(i => (
-          <div key={i} className="bg-gray-200 rounded-lg h-96 animate-pulse"></div>
+          <div key={i} className="bg-gray-200 rounded-xl h-96 animate-pulse"></div>
         ))}
       </div>
     );
@@ -22,7 +22,7 @@ const TourList: React.FC<TourListProps> = ({ tours, onViewDetails, onBookClick, 
 
   if (tours.length === 0) {
     return (
-      <div className="text-center py-12">
+      <div className="text-center py-16 lg:py-24">
         <p className="text-gray-500 text-lg">
           No tours found. Try adjusting your filters.
         </p>
@@ -31,10 +31,10 @@ const TourList: React.FC<TourListProps> = ({ tours, onViewDetails, onBookClick, 
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="tour-grid">
       {tours.map(tour => (
-        <TourCard 
-          key={tour.id} 
+        <TourCard
+          key={tour.id}
           tour={tour}
           onViewDetails={onViewDetails}
           onBookClick={onBookClick}

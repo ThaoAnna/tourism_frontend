@@ -25,12 +25,12 @@ const TourCard: React.FC<TourCardProps> = ({ tour, onViewDetails, onBookClick })
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <div className="relative cursor-pointer" onClick={() => onViewDetails(tour)}>
         <img 
           src={tour.imageUrl} 
           alt={tour.name}
-          className="w-full h-48 object-cover"
+          className="w-full h-52 object-cover"
         />
         <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full text-xs font-semibold text-blue-600">
           {tour.style}
@@ -40,7 +40,7 @@ const TourCard: React.FC<TourCardProps> = ({ tour, onViewDetails, onBookClick })
         </div>
       </div>
       
-      <div className="p-5">
+      <div className="p-6">
         <h3 className="text-xl font-bold text-gray-800 mb-2 hover:text-blue-600 cursor-pointer" onClick={() => onViewDetails(tour)}>
           {tour.name}
         </h3>

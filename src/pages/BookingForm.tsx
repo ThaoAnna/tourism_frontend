@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import Header from "../components/Header";
+import PageShell from "../components/layout/PageShell";
+import Container from "../components/layout/Container";
+import Section from "../components/layout/Section";
 import type { Tour, BookingRequest } from "../types/index";
 import { bookingService } from "../services/bookingService";
 import { formatPrice, getTodayDate, calculateTotalPriceRange } from "../utils/helpers";
@@ -260,23 +263,18 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const formContent = (
     <>
       {!embedded && (
-        <>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2 sm:mt-2 mb-2 sm:mb-3 lg:mb-4 text-gray-700 text-center">
-            {tour.name}
-          </h2>
-          <div className="pb-5 pt-0">
-            <Header />
-          </div>
-        </>
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 lg:mb-10 text-gray-800 text-center tracking-tight">
+          {tour.name}
+        </h2>
       )}
 
       {!embedded && (
-        <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg mb-6">
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
-              Tour details:
+        <div className="w-full max-w-lg mb-8 lg:mb-10">
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 md:p-8">
+            <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-3">
+              Tour details
             </h3>
-            <div className="text-sm text-gray-600 space-y-1">
+            <div className="text-sm text-gray-600 space-y-2 leading-relaxed">
               <p><span className="font-semibold">Duration:</span> {tour.duration} days</p>
               <p><span className="font-semibold">Route:</span> {tour.route.join(" → ")}</p>
             </div>
@@ -284,7 +282,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
         </div>
       )}
 
-      <div className={`rounded-2xl shadow-lg w-full ${embedded ? "" : "max-w-sm sm:max-w-md lg:max-w-lg"} bg-gradient-to-r from-blue-50 to-purple-50 p-4 sm:p-6 lg:p-8`}>
+      <div className={`rounded-2xl shadow-lg w-full ${embedded ? "" : "max-w-lg"} bg-gradient-to-r from-blue-50 to-purple-50 p-6 md:p-8`}>
         <div className="mb-3 sm:mb-4">
           <label className="block text-xs sm:text-sm font-medium text-gray-800 mb-1">
             <IconUser /> Full Name *
@@ -458,12 +456,16 @@ const BookingForm: React.FC<BookingFormProps> = ({
   return (
     <>
       {showSuccessModal && <SuccessModal />}
-      <section
-        id="booking"
-        className="pb-6 sm:pt-8 lg:pt-26 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white min-h-screen"
-      >
-        {formContent}
-      </section>
+      <PageShell className="bg-white">
+        <Header />
+        <main className="flex-1">
+          <Section>
+            <Container className="flex flex-col items-center">
+              {formContent}
+            </Container>
+          </Section>
+        </main>
+      </PageShell>
     </>
   );
 };
