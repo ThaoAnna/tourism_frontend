@@ -1,12 +1,26 @@
 @import "tailwindcss";
 
+@theme {
+  --color-navy: #132238;
+  --color-navy-light: #1a2f4a;
+  --color-emerald: #1f7a5c;
+  --color-emerald-dark: #18634a;
+  --color-gold: #f4b860;
+  --color-gold-dark: #e0a44a;
+  --color-sand: #fff7e8;
+  --color-sand-dark: #f5ead4;
+  --color-terracotta: #c65d3a;
+  --color-ink: #1f2937;
+  --color-muted: #6b7280;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    @apply antialiased text-gray-800 bg-gray-50;
+    @apply antialiased bg-sand text-ink;
     font-feature-settings: "kern" 1, "liga" 1;
   }
 
@@ -16,33 +30,59 @@
 }
 
 @layer components {
-  /* Standard page container — 1280px max, responsive side margins */
   .container-page {
     @apply mx-auto w-full max-w-7xl px-5 md:px-8;
   }
 
-  /* Wide gallery container — 1440px max for tour imagery grids */
   .container-gallery {
     @apply mx-auto w-full max-w-[1440px] px-5 md:px-8;
   }
 
-  /* Readable prose block — ~65–75 characters per line */
   .readable-content {
     @apply mx-auto w-full max-w-[750px];
   }
 
-  /* Vertical rhythm between major page sections */
   .section-spacing {
-    @apply py-12 md:py-16 lg:py-24 xl:py-[7.5rem];
+    @apply py-12 md:py-16 lg:py-24;
   }
 
-  /* In-page section gaps (within a single page card) */
   .section-gap {
-    @apply space-y-12 md:space-y-16 lg:space-y-24 xl:space-y-[7.5rem];
+    @apply space-y-12 md:space-y-16 lg:space-y-24;
   }
 
-  /* Tour card grid — 24px mobile/tablet, 32px desktop */
   .tour-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8;
+    @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center min-h-11 px-6 rounded-full
+      bg-gold text-navy font-semibold text-sm
+      hover:bg-gold-dark focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2
+      transition-all duration-300;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center min-h-11 px-6 rounded-full
+      border border-white/40 bg-white/10 text-white font-semibold text-sm backdrop-blur-sm
+      hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-navy
+      transition-all duration-300;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center min-h-10 px-4 rounded-full
+      border border-navy/15 bg-white text-navy font-medium text-sm
+      hover:border-navy/30 hover:bg-sand focus:outline-none focus:ring-2 focus:ring-navy/20
+      transition-all duration-300;
+  }
+
+  .btn-emerald {
+    @apply inline-flex items-center justify-center min-h-10 px-4 rounded-full
+      bg-emerald text-white font-semibold text-sm
+      hover:bg-emerald-dark focus:outline-none focus:ring-2 focus:ring-emerald focus:ring-offset-2
+      transition-all duration-300;
+  }
+
+  .nav-link {
+    @apply text-sm font-medium text-ink/80 hover:text-navy transition-colors duration-200;
   }
 }

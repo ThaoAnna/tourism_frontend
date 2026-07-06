@@ -1,73 +1,98 @@
-import Header from "../components/Header";
-import { AuroraCanvas } from "../components/ui/aurora-canvas";
-import Container from "../components/layout/Container";
+import { Link } from "react-router-dom";
+import AuthLayout, {
+  authButtonClass,
+  authFieldGroupClass,
+  authInputClass,
+  authLabelClass,
+} from "../components/auth/AuthLayout";
 
 export default function RegisterForm() {
   return (
-    <div className="min-h-screen relative pt-16">
-      <AuroraCanvas
-        className="absolute inset-0 -z-10 h-full w-full"
-        colors={["#00ff87", "#60efff", "#0061ff", "#ff0099"]}
-        speed={0.25}
-        layers={3}
-        interactive
-      />
-      <Header />
+    <AuthLayout
+      footer={
+        <p>
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:underline"
+          >
+            Sign in
+          </Link>
+        </p>
+      }
+    >
+      <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-gray-200/90 shadow-sm p-6 sm:p-7">
+        <header className="mb-5">
+          <h1 className="text-lg font-semibold text-gray-900 tracking-tight">
+            Create account
+          </h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Get started with your Wanderluster account.
+          </p>
+        </header>
 
-      <main className="section-spacing">
-        <Container className="flex flex-col items-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 lg:mb-12 text-gray-800 tracking-tight">
-            Register
-          </h2>
-          <form className="bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-2xl shadow-lg w-full max-w-md border border-white/50">
-            <div className="mb-5">
-              <label className="block text-gray-700 mb-2 font-semibold">Name</label>
-              <input
-                type="text"
-                placeholder="Enter your name"
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none transition-shadow"
-              />
-            </div>
+        <form className={authFieldGroupClass} noValidate>
+          <div>
+            <label htmlFor="register-name" className={authLabelClass}>
+              Name
+            </label>
+            <input
+              id="register-name"
+              type="text"
+              name="name"
+              autoComplete="name"
+              placeholder="Your full name"
+              className={authInputClass}
+            />
+          </div>
 
-            <div className="mb-5">
-              <label className="block text-gray-700 mb-2 font-semibold">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                placeholder="Enter your phone number"
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none transition-shadow"
-              />
-            </div>
-            <div className="mb-5">
-              <label className="block text-gray-700 mb-2 font-semibold">
-                Email
-              </label>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none transition-shadow"
-              />
-            </div>
-            <div className="mb-5">
-              <label className="block text-gray-700 mb-2 font-semibold">
-                Password
-              </label>
-              <input
-                type="password"
-                placeholder="Enter your password"
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none transition-shadow"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-3 mt-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white font-semibold rounded-full hover:opacity-90 transition"
-            >
-              Register
-            </button>
-          </form>
-        </Container>
-      </main>
-    </div>
+          <div>
+            <label htmlFor="register-phone" className={authLabelClass}>
+              Phone number
+            </label>
+            <input
+              id="register-phone"
+              type="tel"
+              name="phone"
+              autoComplete="tel"
+              placeholder="+1 234 567 8900"
+              className={authInputClass}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="register-email" className={authLabelClass}>
+              Email
+            </label>
+            <input
+              id="register-email"
+              type="email"
+              name="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              className={authInputClass}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="register-password" className={authLabelClass}>
+              Password
+            </label>
+            <input
+              id="register-password"
+              type="password"
+              name="password"
+              autoComplete="new-password"
+              placeholder="Create a password"
+              className={authInputClass}
+            />
+          </div>
+
+          <button type="submit" className={`${authButtonClass} mt-1`}>
+            Create account
+          </button>
+        </form>
+      </div>
+    </AuthLayout>
   );
 }

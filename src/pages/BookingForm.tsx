@@ -1,80 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import {
+  User,
+  Mail,
+  Phone,
+  Calendar,
+  Users,
+  MapPin,
+  Clock,
+  ArrowLeft,
+  Loader2,
+} from "lucide-react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import PageShell from "../components/layout/PageShell";
 import Container from "../components/layout/Container";
-import Section from "../components/layout/Section";
 import type { Tour, BookingRequest } from "../types/index";
 import { bookingService } from "../services/bookingService";
 import { formatPrice, getTodayDate, calculateTotalPriceRange } from "../utils/helpers";
 
-const IconUser = () => (
-  <svg
-    className="w-4 h-4 inline mr-1"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-  >
-    <path d="M16 21v-2a4 4 0 0 0-8 0v2" />
-    <circle cx="12" cy="7" r="4" />
-  </svg>
-);
+const fieldClass =
+  "w-full min-h-11 px-4 py-2.5 text-sm text-ink bg-white border border-navy/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald/25 focus:border-emerald transition-colors placeholder:text-muted/50";
 
-const IconMail = () => (
-  <svg
-    className="w-4 h-4 inline mr-1"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-  >
-    <path d="M4 4h16v16H4z" />
-    <polyline points="22,6 12,13 2,6" />
-  </svg>
-);
+const labelClass =
+  "flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted mb-2";
 
-const IconPhone = () => (
-  <svg
-    className="w-4 h-4 inline mr-1"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-  >
-    <path d="M22 16.92V21a2 2 0 0 1-2.18 2A19.8 19.8 0 0 1 3 5.18 2 2 0 0 1 5 3h4.09a1 1 0 0 1 1 .75l1.1 4.4a1 1 0 0 1-.27.94l-2.2 2.2a16 16 0 0 0 6.9 6.9l2.2-2.2a1 1 0 0 1 .94-.27l4.4 1.1a1 1 0 0 1 .75 1z" />
-  </svg>
-);
+const fieldErrorClass = "border-terracotta focus:ring-terracotta/25 focus:border-terracotta";
 
-const IconCalendar = () => (
-  <svg
-    className="w-4 h-4 inline mr-1"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-  >
-    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-    <line x1="16" y1="2" x2="16" y2="6" />
-    <line x1="8" y1="2" x2="8" y2="6" />
-    <line x1="3" y1="10" x2="21" y2="10" />
-  </svg>
-);
-
-const IconUsers = () => (
-  <svg
-    className="w-4 h-4 inline mr-1"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-  >
-    <path d="M17 21v-2a4 4 0 0 0-3-3.87" />
-    <path d="M9 21v-2a4 4 0 0 1 3-3.87" />
-    <circle cx="9" cy="7" r="4" />
-    <circle cx="17" cy="7" r="4" />
-  </svg>
-);
+const embeddedSectionClass =
+  "rounded-xl border border-navy/10 bg-white p-4 space-y-4";
 
 interface BookingFormData {
   customerName: string;
@@ -200,16 +154,17 @@ const BookingForm: React.FC<BookingFormProps> = ({
   );
 
   const SuccessModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 animate-fade-in">
-        <div className="flex justify-center mb-4">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+    <div className="fixed inset-0 bg-navy/60 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+      <div className="bg-white rounded-2xl shadow-2xl shadow-navy/15 border border-navy/5 max-w-md w-full p-6 sm:p-8">
+        <div className="flex justify-center mb-5">
+          <div className="w-16 h-16 bg-emerald/10 rounded-full flex items-center justify-center ring-4 ring-emerald/10">
             <svg
-              className="w-10 h-10 text-green-500"
+              className="w-9 h-9 text-emerald"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
               viewBox="0 0 24 24"
+              aria-hidden
             >
               <path
                 strokeLinecap="round"
@@ -220,39 +175,39 @@ const BookingForm: React.FC<BookingFormProps> = ({
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-center text-gray-800 mb-2">
+        <h3 className="text-2xl font-bold text-center text-navy mb-2 tracking-tight">
           Booking Confirmed!
         </h3>
-        <p className="text-center text-gray-600 mb-6">
+        <p className="text-center text-muted mb-6 leading-relaxed text-sm">
           Thank you, {formData.customerName}! Your booking has been confirmed.
           A confirmation email will be sent to{" "}
-          <span className="font-semibold">{formData.customerEmail}</span>
+          <span className="font-semibold text-ink">{formData.customerEmail}</span>
         </p>
 
-        <div className="bg-gray-50 rounded-lg p-4 mb-6 space-y-2">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Tour:</span>
-            <span className="font-semibold text-gray-800">{tour.name}</span>
+        <div className="bg-sand rounded-xl p-4 mb-6 space-y-2.5 border border-navy/5">
+          <div className="flex justify-between text-sm gap-4">
+            <span className="text-muted shrink-0">Tour</span>
+            <span className="font-semibold text-ink text-right">{tour.name}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Date:</span>
-            <span className="font-semibold text-gray-800">{formData.travelDate}</span>
+            <span className="text-muted">Date</span>
+            <span className="font-semibold text-ink">{formData.travelDate}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">People:</span>
-            <span className="font-semibold text-gray-800">{formData.numberOfPeople}</span>
+            <span className="text-muted">People</span>
+            <span className="font-semibold text-ink">{formData.numberOfPeople}</span>
           </div>
-          <div className="flex justify-between text-sm pt-2 border-t border-gray-200">
-            <span className="text-gray-600">Total:</span>
-            <span className="font-bold text-blue-600">
-              {formatPrice(totalPrice.min)} - {formatPrice(totalPrice.max)}
+          <div className="flex justify-between text-sm pt-2.5 border-t border-navy/10">
+            <span className="text-muted">Total</span>
+            <span className="font-bold text-emerald">
+              {formatPrice(totalPrice.min)} – {formatPrice(totalPrice.max)}
             </span>
           </div>
         </div>
 
         <button
           onClick={() => history.push("/")}
-          className="w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white py-3 rounded-lg text-base font-semibold hover:opacity-90 transition duration-200 shadow-md"
+          className="btn-primary w-full !min-h-11"
         >
           Back to Home Page
         </button>
@@ -260,184 +215,251 @@ const BookingForm: React.FC<BookingFormProps> = ({
     </div>
   );
 
-  const formContent = (
-    <>
-      {!embedded && (
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 lg:mb-10 text-gray-800 text-center tracking-tight">
-          {tour.name}
-        </h2>
-      )}
-
-      {!embedded && (
-        <div className="w-full max-w-lg mb-8 lg:mb-10">
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 md:p-8">
-            <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-3">
-              Tour details
-            </h3>
-            <div className="text-sm text-gray-600 space-y-2 leading-relaxed">
-              <p><span className="font-semibold">Duration:</span> {tour.duration} days</p>
-              <p><span className="font-semibold">Route:</span> {tour.route.join(" → ")}</p>
-            </div>
-          </div>
+  const tourSummaryCard = (
+    <div className="bg-white rounded-2xl border border-navy/5 overflow-hidden shadow-md shadow-navy/5">
+      <div className="relative h-44 sm:h-52 overflow-hidden">
+        <img
+          src={tour.imageUrl}
+          alt={tour.name}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy/70 to-transparent" />
+        <div className="absolute bottom-4 left-4 right-4">
+          <span className="inline-block bg-gold text-navy text-xs font-bold px-2.5 py-0.5 rounded-full mb-2">
+            {tour.style}
+          </span>
+          <h3 className="text-white font-bold text-lg leading-snug">{tour.name}</h3>
         </div>
-      )}
+      </div>
+      <div className="p-5 space-y-3">
+        <div className="flex items-center gap-2 text-sm text-muted">
+          <Clock className="w-4 h-4 text-emerald shrink-0" />
+          <span>{tour.duration} days</span>
+        </div>
+        <div className="flex items-start gap-2 text-sm text-muted">
+          <MapPin className="w-4 h-4 text-terracotta shrink-0 mt-0.5" />
+          <span className="leading-snug">{tour.route.join(" → ")}</span>
+        </div>
+        <div className="pt-3 border-t border-navy/5">
+          <p className="text-xs text-muted uppercase tracking-wide font-medium">From</p>
+          <p className="text-2xl font-bold text-emerald mt-0.5">
+            {formatPrice(tour.totalPrice.min)}
+            <span className="text-sm font-normal text-muted"> / person</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 
-      <div className={`rounded-2xl shadow-lg w-full ${embedded ? "" : "max-w-lg"} bg-gradient-to-r from-blue-50 to-purple-50 p-6 md:p-8`}>
-        <div className="mb-3 sm:mb-4">
-          <label className="block text-xs sm:text-sm font-medium text-gray-800 mb-1">
-            <IconUser /> Full Name *
-          </label>
-          <input
-            type="text"
-            value={formData.customerName}
-            onChange={(e) => handleChange("customerName", e.target.value)}
-            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
-              errors.customerName ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="John Doe"
-          />
-          {errors.customerName && (
-            <p className="text-red-500 text-xs mt-1">{errors.customerName}</p>
+  const priceSummary = (compact = false) => (
+    <div
+      className={
+        compact ? embeddedSectionClass : "bg-navy rounded-2xl p-5 text-white"
+      }
+    >
+      <div className={compact ? "flex items-end justify-between gap-4" : ""}>
+        <div className="w-full">
+          {compact && (
+            <p className="text-xs font-bold text-navy uppercase tracking-wide mb-3">
+              Estimated total
+            </p>
           )}
-        </div>
-
-        <div className="mb-3 sm:mb-4">
-          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-            <IconMail /> Email *
-          </label>
-          <input
-            type="email"
-            value={formData.customerEmail}
-            onChange={(e) => handleChange("customerEmail", e.target.value)}
-            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
-              errors.customerEmail ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="john@example.com"
-          />
-          {errors.customerEmail && (
-            <p className="text-red-500 text-xs mt-1">{errors.customerEmail}</p>
+          {!compact && (
+            <p className="text-xs uppercase tracking-wide text-white/60 font-medium mb-1">
+              Estimated total
+            </p>
           )}
-        </div>
-
-        <div className="mb-3 sm:mb-4">
-          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-            <IconPhone /> Phone *
-          </label>
-          <input
-            type="tel"
-            value={formData.customerPhone}
-            onChange={(e) => handleChange("customerPhone", e.target.value)}
-            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
-              errors.customerPhone ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="+1 234 567 8900"
-          />
-          {errors.customerPhone && (
-            <p className="text-red-500 text-xs mt-1">{errors.customerPhone}</p>
-          )}
-        </div>
-
-        <div className="mb-3 sm:mb-4">
-          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-            <IconCalendar /> Travel Date *
-          </label>
-          <input
-            type="date"
-            value={formData.travelDate}
-            onChange={(e) => handleChange("travelDate", e.target.value)}
-            min={getTodayDate()}
-            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
-              errors.travelDate ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.travelDate && (
-            <p className="text-red-500 text-xs mt-1">{errors.travelDate}</p>
-          )}
-        </div>
-
-        <div className="mb-3 sm:mb-4">
-          <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-            <IconUsers /> Number of People *
-          </label>
-          <input
-            type="number"
-            min={1}
-            max={10}
-            value={formData.numberOfPeople}
-            onChange={(e) =>
-              handleChange("numberOfPeople", parseInt(e.target.value) || 1)
+          <p
+            className={
+              compact
+                ? "text-xl font-bold text-emerald"
+                : "text-2xl sm:text-3xl font-bold text-gold"
             }
-            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
-              errors.numberOfPeople ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.numberOfPeople && (
-            <p className="text-red-500 text-xs mt-1">{errors.numberOfPeople}</p>
-          )}
+          >
+            {formatPrice(totalPrice.min)} – {formatPrice(totalPrice.max)}
+          </p>
         </div>
-
-        <div className="bg-blue-50 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm sm:text-base font-medium text-gray-700">Total Price Range:</span>
-            <span className="text-xl sm:text-2xl font-bold text-blue-600">
-              {formatPrice(totalPrice.min)} - {formatPrice(totalPrice.max)}
-            </span>
-          </div>
-          <div className="text-xs text-gray-600 space-y-1">
+        {!compact && (
+          <div className="mt-4 pt-4 border-t border-white/10 space-y-1.5 text-sm text-white/70">
             <p>
-              Base price: {formatPrice(tour.totalPrice.min)} - {formatPrice(tour.totalPrice.max)} per person
+              {formatPrice(tour.totalPrice.min)} – {formatPrice(tour.totalPrice.max)} per person
             </p>
             <p>
-              {formData.numberOfPeople} {formData.numberOfPeople === 1 ? "person" : "people"}
+              {formData.numberOfPeople}{" "}
+              {formData.numberOfPeople === 1 ? "traveler" : "travelers"}
             </p>
           </div>
+        )}
+      </div>
 
-          {tour.priceBreakdown && (
-            <div className="mt-3 pt-3 border-t border-blue-200">
-              <p className="text-xs font-semibold text-gray-700 mb-2">Price includes (per person):</p>
-              <div className="text-xs text-gray-600 space-y-1">
-                <p>• Transport: {formatPrice(tour.priceBreakdown.transport)}</p>
-                <p>• Hotel: {formatPrice(tour.priceBreakdown.hotel)}</p>
-                <p>• Food & Activities: {formatPrice(tour.priceBreakdown.foodAndActivities)}</p>
-              </div>
+      {compact ? (
+        <p className="text-xs text-muted mt-2">
+          {formatPrice(tour.totalPrice.min)} – {formatPrice(tour.totalPrice.max)} per person ·{" "}
+          {formData.numberOfPeople}{" "}
+          {formData.numberOfPeople === 1 ? "traveler" : "travelers"}
+        </p>
+      ) : (
+        tour.priceBreakdown && (
+          <div className="mt-4 pt-4 border-t border-white/10">
+            <p className="text-xs font-semibold text-white/80 mb-2 uppercase tracking-wide">
+              Per person includes
+            </p>
+            <div className="text-xs text-white/60 space-y-1">
+              <p>Transport: {formatPrice(tour.priceBreakdown.transport)}</p>
+              <p>Hotel: {formatPrice(tour.priceBreakdown.hotel)}</p>
+              <p>Food & Activities: {formatPrice(tour.priceBreakdown.foodAndActivities)}</p>
             </div>
+          </div>
+        )
+      )}
+    </div>
+  );
+
+  const renderField = (
+    id: keyof BookingFormData,
+    label: string,
+    icon: React.ReactNode,
+    input: React.ReactNode
+  ) => (
+    <div>
+      <label htmlFor={id} className={labelClass}>
+        {icon} {label}
+      </label>
+      {input}
+      {errors[id] && (
+        <p className="text-terracotta text-xs mt-1.5">{errors[id]}</p>
+      )}
+    </div>
+  );
+
+  const formFields = (compact = false) => (
+    <div className={compact ? "space-y-4" : "space-y-8"}>
+      <div className={compact ? embeddedSectionClass : ""}>
+        {!compact && (
+          <h3 className="text-sm font-bold text-navy uppercase tracking-wide mb-4 pb-2 border-b border-navy/5">
+            Your details
+          </h3>
+        )}
+        {compact && (
+          <p className="text-xs font-bold text-navy uppercase tracking-wide">Your details</p>
+        )}
+        <div className={`grid grid-cols-1 ${compact ? "" : "sm:grid-cols-2"} gap-4`}>
+          <div className={compact ? "" : "sm:col-span-2"}>
+            {renderField(
+              "customerName",
+              "Full Name *",
+              <User className="w-3.5 h-3.5 text-emerald" />,
+              <input
+                id="customerName"
+                type="text"
+                value={formData.customerName}
+                onChange={(e) => handleChange("customerName", e.target.value)}
+                className={`${fieldClass} ${errors.customerName ? fieldErrorClass : ""}`}
+                placeholder="John Doe"
+              />
+            )}
+          </div>
+
+          {renderField(
+            "customerEmail",
+            "Email *",
+            <Mail className="w-3.5 h-3.5 text-emerald" />,
+            <input
+              id="customerEmail"
+              type="email"
+              value={formData.customerEmail}
+              onChange={(e) => handleChange("customerEmail", e.target.value)}
+              className={`${fieldClass} ${errors.customerEmail ? fieldErrorClass : ""}`}
+              placeholder="john@example.com"
+            />
+          )}
+
+          {renderField(
+            "customerPhone",
+            "Phone *",
+            <Phone className="w-3.5 h-3.5 text-emerald" />,
+            <input
+              id="customerPhone"
+              type="tel"
+              value={formData.customerPhone}
+              onChange={(e) => handleChange("customerPhone", e.target.value)}
+              className={`${fieldClass} ${errors.customerPhone ? fieldErrorClass : ""}`}
+              placeholder="+1 234 567 8900"
+            />
           )}
         </div>
+      </div>
 
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+      <div className={compact ? embeddedSectionClass : ""}>
+        {!compact && (
+          <h3 className="text-sm font-bold text-navy uppercase tracking-wide mb-4 pb-2 border-b border-navy/5">
+            Trip details
+          </h3>
+        )}
+        {compact && (
+          <p className="text-xs font-bold text-navy uppercase tracking-wide">Trip details</p>
+        )}
+        <div className={`grid grid-cols-1 ${compact ? "" : "sm:grid-cols-2"} gap-4`}>
+          {renderField(
+            "travelDate",
+            "Travel Date *",
+            <Calendar className="w-3.5 h-3.5 text-emerald" />,
+            <input
+              id="travelDate"
+              type="date"
+              value={formData.travelDate}
+              onChange={(e) => handleChange("travelDate", e.target.value)}
+              min={getTodayDate()}
+              className={`${fieldClass} ${errors.travelDate ? fieldErrorClass : ""}`}
+            />
+          )}
+
+          {renderField(
+            "numberOfPeople",
+            "Number of People *",
+            <Users className="w-3.5 h-3.5 text-emerald" />,
+            <input
+              id="numberOfPeople"
+              type="number"
+              min={1}
+              max={10}
+              value={formData.numberOfPeople}
+              onChange={(e) =>
+                handleChange("numberOfPeople", parseInt(e.target.value) || 1)
+              }
+              className={`${fieldClass} ${errors.numberOfPeople ? fieldErrorClass : ""}`}
+            />
+          )}
+        </div>
+      </div>
+
+      {priceSummary(compact)}
+
+      <div className={compact ? embeddedSectionClass : ""}>
+        <div className={`flex flex-col ${compact ? "" : "sm:flex-row"} gap-3`}>
           <button
             type="button"
             onClick={handleCancel}
-            className="w-full sm:flex-1 bg-gray-200 text-gray-700 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold hover:bg-gray-300 transition-colors duration-200"
+            className={`btn-outline w-full ${compact ? "" : "sm:flex-1"} !min-h-12`}
           >
-            Back
+            {embedded ? "Cancel" : (
+              <span className="inline-flex items-center gap-2">
+                <ArrowLeft className="w-4 h-4" />
+                Back
+              </span>
+            )}
           </button>
           <button
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className={`w-full sm:flex-1 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition duration-200 ${
-              isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
+            className={`btn-emerald w-full ${compact ? "" : "sm:flex-1"} !min-h-12 !text-base ${
+              isSubmitting ? "opacity-70 cursor-not-allowed" : ""
             }`}
           >
             {isSubmitting ? (
-              <span className="flex items-center justify-center">
-                <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    fill="none"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="w-5 h-5 animate-spin" />
                 Processing...
               </span>
             ) : (
@@ -446,25 +468,72 @@ const BookingForm: React.FC<BookingFormProps> = ({
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 
   if (embedded) {
-    return <>{formContent}</>;
+    return (
+      <div className="space-y-4">
+        <div className={`${embeddedSectionClass} !space-y-3`}>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+            <span className="inline-flex items-center gap-1.5 text-muted">
+              <Clock className="w-4 h-4 text-emerald shrink-0" />
+              {tour.duration} days
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-muted min-w-0">
+              <MapPin className="w-4 h-4 text-terracotta shrink-0" />
+              <span className="truncate">{tour.route.join(" · ")}</span>
+            </span>
+            <span className="text-xs font-semibold text-emerald bg-emerald/10 px-2.5 py-0.5 rounded-full">
+              {tour.style}
+            </span>
+          </div>
+        </div>
+        {formFields(true)}
+      </div>
+    );
   }
 
   return (
     <>
       {showSuccessModal && <SuccessModal />}
-      <PageShell className="bg-white">
+      <PageShell>
         <Header />
-        <main className="flex-1">
-          <Section>
-            <Container className="flex flex-col items-center">
-              {formContent}
-            </Container>
-          </Section>
+        <main className="flex-1 section-spacing">
+          <Container>
+            <button
+              onClick={() => history.goBack()}
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-navy transition-colors mb-8"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </button>
+
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
+              <div className="lg:col-span-2 space-y-5">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-emerald mb-2">
+                    Complete your booking
+                  </p>
+                  <h1 className="text-2xl md:text-3xl font-bold text-navy tracking-tight leading-tight">
+                    Reserve your adventure
+                  </h1>
+                  <p className="text-muted mt-2 text-sm leading-relaxed">
+                    Fill in your details below. You won&apos;t be charged until your booking is confirmed.
+                  </p>
+                </div>
+                {tourSummaryCard}
+              </div>
+
+              <div className="lg:col-span-3">
+                <div className="bg-white rounded-2xl border border-navy/5 shadow-md shadow-navy/5 p-6 sm:p-8">
+                  {formFields()}
+                </div>
+              </div>
+            </div>
+          </Container>
         </main>
+        <Footer />
       </PageShell>
     </>
   );

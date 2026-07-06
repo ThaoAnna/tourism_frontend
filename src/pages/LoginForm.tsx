@@ -1,64 +1,70 @@
-import { AuroraCanvas } from "../components/ui/aurora-canvas";
 import { Link } from "react-router-dom";
-import Header from "../components/Header";
-import Container from "../components/layout/Container";
+import AuthLayout, {
+  authButtonClass,
+  authFieldGroupClass,
+  authInputClass,
+  authLabelClass,
+} from "../components/auth/AuthLayout";
 
 export default function LoginForm() {
   return (
-    <div className="min-h-screen relative pt-16">
-      <AuroraCanvas
-        className="absolute inset-0 -z-10 h-full w-full"
-        colors={["#00ff87", "#60efff", "#0061ff", "#ff0099"]}
-        speed={0.25}
-        layers={3}
-        interactive
-      />
-      <Header />
+    <AuthLayout
+      footer={
+        <p>
+          Don&apos;t have an account?{" "}
+          <Link
+            to="/register"
+            className="font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:underline"
+          >
+            Sign up
+          </Link>
+        </p>
+      }
+    >
+      <div className="bg-white/95 backdrop-blur-sm rounded-xl border border-gray-200/90 shadow-sm p-6 sm:p-7">
+        <header className="mb-5">
+          <h1 className="text-lg font-semibold text-gray-900 tracking-tight">
+            Sign in
+          </h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Welcome back. Enter your credentials to continue.
+          </p>
+        </header>
 
-      <main className="section-spacing">
-        <Container className="flex flex-col items-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 lg:mb-12 text-gray-800 tracking-tight">
-            Login
-          </h2>
-          <form className="bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-2xl shadow-lg w-full max-w-md border border-white/50">
-            <div className="mb-5">
-              <label className="block text-gray-700 mb-2 font-semibold">
-                Email
-              </label>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none transition-shadow"
-              />
-            </div>
-            <div className="mb-5">
-              <label className="block text-gray-700 mb-2 font-semibold">
-                Password
-              </label>
-              <input
-                type="password"
-                placeholder="Enter your password"
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:outline-none transition-shadow"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-3 mt-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white font-semibold rounded-full hover:opacity-90 transition"
-            >
-              Submit
-            </button>
+        <form className={authFieldGroupClass} noValidate>
+          <div>
+            <label htmlFor="login-email" className={authLabelClass}>
+              Email
+            </label>
+            <input
+              id="login-email"
+              type="email"
+              name="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              className={authInputClass}
+            />
+          </div>
 
-            <Link
-              to="/register"
-              className="w-full flex items-center justify-center pt-6"
-            >
-              <span className="text-center font-medium text-gray-700 hover:text-sky-600 transition-colors">
-                Don&apos;t have an account yet? Sign up
-              </span>
-            </Link>
-          </form>
-        </Container>
-      </main>
-    </div>
+          <div>
+            <label htmlFor="login-password" className={authLabelClass}>
+              Password
+            </label>
+            <input
+              id="login-password"
+              type="password"
+              name="password"
+              autoComplete="current-password"
+              placeholder="Enter your password"
+              className={authInputClass}
+            />
+          </div>
+
+          <button type="submit" className={`${authButtonClass} mt-1`}>
+            Sign in
+          </button>
+        </form>
+      </div>
+    </AuthLayout>
   );
 }

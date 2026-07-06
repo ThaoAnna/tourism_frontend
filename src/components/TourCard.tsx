@@ -1,17 +1,34 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { Navigation } from 'lucide-react';
-import type { Tour } from '../types/index';
-import { formatPrice } from '../utils/helpers';
+import React from "react";
+import { useHistory } from "react-router-dom";
+import { motion } from "framer-motion";
+import { MapPin, Star } from "lucide-react";
+import type { Tour } from "../types/index";
+import { formatPrice } from "../utils/helpers";
+import { getTourRating } from "../utils/constants";
 
 interface TourCardProps {
   tour: Tour;
   onViewDetails: (tour: Tour) => void;
   onBookClick?: (tour: Tour) => void;
+  index?: number;
 }
 
-const TourCard: React.FC<TourCardProps> = ({ tour, onViewDetails, onBookClick }) => {
+const TourCard: React.FC<TourCardProps> = ({
+  tour,
+  onViewDetails,
+  onBookClick,
+  index = 0,
+}) => {
   const history = useHistory();
+  const { rating, reviewCount } = {
+    rating: tour.rating ?? getTourRating(tour.id).rating,
+    reviewCount: tour.reviewCount ?? getTourRating(tour.id).reviewCount,
+  };
+  const locationLabel = tour.route.slice(0, 3).join(" · ");
+  const shortDescription =
+    tour.description.length > 110
+      ? `${tour.description.slice(0, 110).trim()}…`
+      : tour.description;
 
   const handleBookNow = () => {
     if (onBookClick) {
@@ -19,71 +36,100 @@ const TourCard: React.FC<TourCardProps> = ({ tour, onViewDetails, onBookClick })
       return;
     }
     history.push({
-      pathname: '/booking',
-      state: { tour }
+      pathname: "/booking",
+      state: { tour },
     });
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-      <div className="relative cursor-pointer" onClick={() => onViewDetails(tour)}>
-        <img 
-          src={tour.imageUrl} 
+    <motion.article
+      className="group bg-white rounded-2xl overflow-hidden border border-navy/5 shadow-md shadow-navy/5 flex flex-col h-full"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{
+        duration: 0.45,
+        delay: Math.min(index * 0.08, 0.4),
+        ease: [0.22, 1, 0.36, 1] as const,
+      }}
+      whileHover={{ y: -6, boxShadow: "0 20px 40px -12px rgba(19, 34, 56, 0.18)" }}
+    >
+      <div
+        className="relative overflow-hidden cursor-pointer"
+        onClick={() => onViewDetails(tour)}
+      >
+        <img
+          src={tour.imageUrl}
           alt={tour.name}
-          className="w-full h-52 object-cover"
+          className="w-full h-56 object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
-        <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full text-xs font-semibold text-blue-600">
+        <div className="absolute inset-0 bg-gradient-to-t from-navy/40 via-transparent to-transparent pointer-events-none" />
+        <span className="absolute top-3 left-3 bg-white/95 text-navy px-3 py-1 rounded-full text-xs font-semibold shadow-sm">
           {tour.style}
-        </div>
-        <div className="absolute bottom-3 left-3 bg-black bg-opacity-60 text-white px-3 py-1 rounded-full text-xs font-semibold">
+        </span>
+        <span className="absolute top-3 right-3 bg-navy/80 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
           {tour.duration} Days
-        </div>
+        </span>
       </div>
-      
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-2 hover:text-blue-600 cursor-pointer" onClick={() => onViewDetails(tour)}>
+
+      <div className="p-5 md:p-6 flex flex-col flex-1">
+        <h3
+          className="text-lg font-bold text-ink leading-snug cursor-pointer hover:text-emerald transition-colors"
+          onClick={() => onViewDetails(tour)}
+        >
           {tour.name}
         </h3>
-        
-        <div className="flex items-center text-gray-600 mb-3 text-sm">
-          <Navigation className="w-4 h-4 mr-1" />
-          <span className="truncate">{tour.route.join(' → ')}</span>
+
+        <div className="flex items-center gap-1.5 mt-2 text-sm text-muted">
+          <MapPin className="w-4 h-4 text-terracotta shrink-0" aria-hidden />
+          <span className="truncate">{locationLabel}</span>
         </div>
-        
-        <div className="mb-4">
-          <p className="text-xs font-semibold text-gray-500 mb-1">Highlights:</p>
-          <ul className="text-xs text-gray-600 space-y-1">
-            {tour.experience.slice(0, 3).map((exp, index) => (
-              <li key={index}>• {exp}</li>
-            ))}
-          </ul>
+
+        <p className="mt-3 text-sm text-muted leading-relaxed line-clamp-2">
+          {shortDescription}
+        </p>
+
+        <div className="flex items-center gap-1.5 mt-3 text-sm">
+          <Star className="w-4 h-4 fill-gold text-gold" aria-hidden />
+          <span className="font-semibold text-ink">{rating.toFixed(1)}</span>
+          <span className="text-muted">({reviewCount} reviews)</span>
         </div>
-        
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-          <div>
-            <span className="text-2xl font-bold text-blue-600">
-              {formatPrice(tour.totalPrice.min)}
-            </span>
-            <span className="text-gray-500 text-sm ml-1">/ person</span>
-            <p className="text-xs text-gray-400">From {formatPrice(tour.totalPrice.min)} to {formatPrice(tour.totalPrice.max)}</p>
+
+        <div className="mt-auto pt-5 border-t border-navy/5">
+          <div className="flex items-end justify-between gap-3 mb-4">
+            <div>
+              <p className="text-xs text-muted uppercase tracking-wide font-medium">
+                From
+              </p>
+              <p className="text-2xl font-bold text-emerald leading-none mt-0.5">
+                {formatPrice(tour.totalPrice.min)}
+              </p>
+              <p className="text-xs text-muted mt-1">per person</p>
+            </div>
+            <p className="text-xs text-muted text-right pb-0.5">
+              up to {formatPrice(tour.totalPrice.max)}
+            </p>
           </div>
-          <div className="flex flex-col gap-2">
+
+          <div className="flex gap-2">
             <button
+              type="button"
               onClick={() => onViewDetails(tour)}
-              className="bg-gray-100 text-gray-700 px-4 py-1 rounded text-sm hover:bg-gray-200 transition-colors duration-200 font-medium"
+              className="btn-outline flex-1"
             >
-              Details
+              View Details
             </button>
             <button
+              type="button"
               onClick={handleBookNow}
-              className="bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 text-white px-4 py-1 rounded text-sm hover:opacity-90 transition-all duration-200 font-medium shadow-md"
+              className="btn-emerald flex-1"
             >
               Book Now
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </motion.article>
   );
 };
 

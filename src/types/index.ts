@@ -21,6 +21,9 @@ export interface Tour {
   imageUrl: string;
   highlights: string[];
   description: string;
+  /** Optional display fields for product cards (future reviews API) */
+  rating?: number;
+  reviewCount?: number;
 }
 
 export interface RouteDetail {

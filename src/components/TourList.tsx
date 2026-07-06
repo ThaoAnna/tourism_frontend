@@ -1,6 +1,6 @@
-import React from 'react';
-import TourCard from './TourCard';
-import type { Tour } from '../types/index';
+import React from "react";
+import TourCard from "./TourCard";
+import type { Tour } from "../types/index";
 
 interface TourListProps {
   tours: Tour[];
@@ -9,12 +9,20 @@ interface TourListProps {
   loading: boolean;
 }
 
-const TourList: React.FC<TourListProps> = ({ tours, onViewDetails, onBookClick, loading }) => {
+const TourList: React.FC<TourListProps> = ({
+  tours,
+  onViewDetails,
+  onBookClick,
+  loading,
+}) => {
   if (loading) {
     return (
       <div className="tour-grid">
-        {[1, 2, 3, 4, 5, 6].map(i => (
-          <div key={i} className="bg-gray-200 rounded-xl h-96 animate-pulse"></div>
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div
+            key={i}
+            className="bg-sand-dark rounded-2xl h-[28rem] animate-pulse"
+          />
         ))}
       </div>
     );
@@ -22,8 +30,8 @@ const TourList: React.FC<TourListProps> = ({ tours, onViewDetails, onBookClick, 
 
   if (tours.length === 0) {
     return (
-      <div className="text-center py-16 lg:py-24">
-        <p className="text-gray-500 text-lg">
+      <div className="text-center py-16 lg:py-20">
+        <p className="text-muted text-lg">
           No tours found. Try adjusting your filters.
         </p>
       </div>
@@ -32,10 +40,11 @@ const TourList: React.FC<TourListProps> = ({ tours, onViewDetails, onBookClick, 
 
   return (
     <div className="tour-grid">
-      {tours.map(tour => (
+      {tours.map((tour, index) => (
         <TourCard
           key={tour.id}
           tour={tour}
+          index={index}
           onViewDetails={onViewDetails}
           onBookClick={onBookClick}
         />
